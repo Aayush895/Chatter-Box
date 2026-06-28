@@ -1,7 +1,7 @@
-import eslint from '@eslint/js'
-import prettierConfig from 'eslint-config-prettier'
-import importPlugin from 'eslint-plugin-import'
-import globals from 'globals'
+import eslint from '@eslint/js';
+import prettierConfig from 'eslint-config-prettier';
+import importPlugin from 'eslint-plugin-import';
+import globals from 'globals';
 
 export default [
   eslint.configs.recommended,
@@ -39,4 +39,4 @@ export default [
     },
   },
   prettierConfig,
-]
+];
