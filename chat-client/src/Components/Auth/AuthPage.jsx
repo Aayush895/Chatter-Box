@@ -5,7 +5,7 @@ function AuthPage() {
   return (
     <>
       {/* BrandPanel contains the typewriter preview & Registrataion contains the forms for signup and login */}
-      <div className="flex w-full border-2 border-amber-500 h-screen bg-[#14111F]">
+      <div className="flex w-full h-screen bg-[#14111F]">
         <BrandPanel />
         <div className="divider divider-horizontal"></div>
         <Registration />

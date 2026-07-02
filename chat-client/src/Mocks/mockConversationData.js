@@ -3,35 +3,33 @@ export const mockConversationData = [
     id: 'msg_001',
     senderName: 'Alex',
     timestamp: '10:00 AM',
-    message:
-      'Hey! I just pushed the new v0 prototype to staging. The document sharing feature is live.',
+    message: 'Hey! Just pushed the new prototype to staging. 🔥 Prepare for bugs.',
   },
   {
     id: 'msg_002',
     senderName: 'You',
     timestamp: '10:02 AM',
     message:
-      'Awesome, checking it out now. Did you fix that JSX issue with the JetBrains Mono font?',
+      'Awesome. Did you fix that font issue or is the app still rendering in Wingdings? 🦇',
   },
   {
     id: 'msg_003',
     senderName: 'Alex',
     timestamp: '10:03 AM',
     message:
-      'Yeah, used className instead of class, and added the underscores. All sorted!',
+      'Fixed it! Used digital duct tape and a bunch of `!important` tags. 🛠️ Please do not look at the code. 🙈',
   },
   {
     id: 'msg_004',
     senderName: 'You',
     timestamp: '10:05 AM',
-    message:
-      'Perfect. By the way, how is the AI document summarization handling larger PDFs?',
+    message: 'Classic. 💀 How is the AI document summarizer handling large PDFs?',
   },
   {
     id: 'msg_005',
     senderName: 'Alex',
     timestamp: '10:07 AM',
     message:
-      'It is surprisingly fast. Under the hood, the system chunks the text into smaller segments, processes them through the LLM, and stitches the summary back together. It takes about 3 to 5 seconds for a standard 10-page document.',
+      'It works perfectly! 🤖 It summarized a 100-page legal doc into "TL;DR: words." We are gonna be rich. 💸',
   },
 ];
