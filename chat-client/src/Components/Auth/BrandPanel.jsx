@@ -2,7 +2,7 @@ import MockConversationPanel from '../Utils/MockConversationPanel';
 
 function BrandPanel() {
   return (
-    <div className="w-[35%] font-bold bg-[radial-gradient(120%_120%_at_0%_0%,#201A38_0%,#14111F_60%)] px-9 py-14">
+    <div className="w-[50%] mx-auto font-bold bg-[radial-gradient(120%_120%_at_0%_0%,#201A38_0%,#14111F_60%)] px-9 py-14">
       <div className="navbar">
         <p className="flex items-center gap-2.5 mb-7">
           <span className="text-[22px] text-[#FF6B4D] rotate-180 inline-block">◡</span>
