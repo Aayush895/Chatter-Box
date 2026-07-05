@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
+import sequelize from './config/databaseConfig.js';
 import { CORSCONFIG, PORT } from './config/serverConfig.js';
 import logger from '../logger.js';
 import { v0routerInstance } from './routes/index.route.js';
@@ -28,9 +29,18 @@ app.use(
   })
 );
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 // Routes
 app.use('/api', v0routerInstance);
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+
   console.log(`Server is up and running on port: ${PORT}`);
 });

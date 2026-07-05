@@ -9,7 +9,7 @@ class AppError extends Error {
   }
 }
 
-class AppResonse {
+class AppResponse {
   constructor(status, message, description, errorMsg = '', data = {}) {
     this.status = status;
     this.message = message;
@@ -20,4 +20,4 @@ class AppResonse {
   }
 }
 
-export { AppError, AppResonse };
+export { AppError, AppResponse };

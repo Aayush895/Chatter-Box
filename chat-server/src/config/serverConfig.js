@@ -8,3 +8,4 @@ export const CORSCONFIG = {
   methods: ['GET', 'PUT', 'POST', 'DELETE'],
   optionsSuccessStatus: 200,
 };
+export const DB_URI = process.env.DB_URI
