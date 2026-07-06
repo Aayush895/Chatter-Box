@@ -3,7 +3,6 @@ import { DB_URI } from './serverConfig.js';
 import { customDatabaseLogger } from '../utils/customDatabaseLogger.js';
 
 const dbLogger = customDatabaseLogger();
-
 const sequelize = new Sequelize(DB_URI, {
   dialect: 'mysql',
   ssl: true,
