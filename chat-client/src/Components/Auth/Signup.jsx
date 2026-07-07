@@ -5,13 +5,12 @@ import Input from '../Utils/Input';
 
 function Signup({ setIsLogin }) {
   return (
-    <div className="bg-[#14111F] w-full">
+    <div className="bg-[#14111F] w-full px-6 sm:px-10 lg:px-14 py-10 lg:py-14 flex flex-col items-center lg:items-start justify-center">
       <Header
         headerText="Create your account"
         subHeaderText="Takes about 30 seconds. No credit card."
       />
-
-      <div className="w-[60%]">
+      <div className="w-full sm:max-w-[420px]">
         <Input
           label="Username"
           placeholder="Username"
@@ -44,8 +43,8 @@ function Signup({ setIsLogin }) {
           minLength="8"
           Hint={() => (
             <p className="validator-hint">
-              Must be more than 8 characters, including At least one number, At least one
-              lowercase letter, At least one uppercase letter
+              Must be more than 8 characters, including at least one number, one lowercase
+              letter, one uppercase letter
             </p>
           )}
         />
@@ -59,14 +58,13 @@ function Signup({ setIsLogin }) {
           minLength="8"
           Hint={() => (
             <p className="validator-hint">
-              Must be more than 8 characters, including At least one number, At least one
-              lowercase letter, At least one uppercase letter
+              Must be more than 8 characters, including at least one number, one lowercase
+              letter, one uppercase letter
             </p>
           )}
         />
       </div>
-
-      <div className="mt-2 w-[60%]">
+      <div className="mt-2 w-full sm:max-w-[420px]">
         <Button btnText="Create account" />
         <p className="text-center text-[13.5px] text-[#9992AC] font-normal mt-5">
           Already have an account?{' '}
