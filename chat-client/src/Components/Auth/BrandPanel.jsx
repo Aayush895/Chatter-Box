@@ -11,7 +11,7 @@ function BrandPanel() {
           </span>
         </p>
       </div>
-      <h1 className="font-['Fraunces',serif] font-medium max-w-[420px] text-2xl xl:text-3xl leading-tight text-[#F3F1F7]">
+      <h1 className="font-['Fraunces',serif] font-medium max-w-105 text-2xl xl:text-3xl leading-tight text-[#F3F1F7]">
         Conversations that feel like they are actually happening
       </h1>
       <MockConversationPanel />

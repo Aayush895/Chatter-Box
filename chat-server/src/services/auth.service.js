@@ -1,26 +1,19 @@
-import { StatusCodes, ReasonPhrases } from 'http-status-codes';
-import { AppResponse, AppError } from '../utils/Request_Response_Classes.js';
-import { registerUser } from '../repository/authRepository.js';
+import { StatusCodes } from 'http-status-codes';
+import { registerUser, loginUser } from '../repository/authRepository.js';
 
 export async function signupService(userName, email, password) {
   if (!userName || !password || !email) {
-    return new AppResponse(
-      StatusCodes.BAD_REQUEST,
-      ReasonPhrases.BAD_REQUEST,
-      'Did not receive username, password or email from client.',
+    const err = new Error(
       'Incoming request from the client is missing username, password or email'
     );
+    err.statusCode = StatusCodes.BAD_REQUEST;
+    throw err;
   }
 
-  try {
-    const databaseResponseData = await registerUser(userName, email, password);
-    return databaseResponseData;
-  } catch (error) {
-    return new AppError(
-      StatusCodes.BAD_REQUEST,
-      ReasonPhrases.BAD_REQUEST,
-      error.message,
-      'Something went wrong on user creation in DB'
-    );
-  }
+  return registerUser(userName, email, password);
+}
+
+export async function loginService(email, password) {
+  const databaseResponseData = await loginUser(email, password);
+  return databaseResponseData;
 }

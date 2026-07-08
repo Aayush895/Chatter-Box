@@ -10,7 +10,7 @@ function Signup({ setIsLogin }) {
         headerText="Create your account"
         subHeaderText="Takes about 30 seconds. No credit card."
       />
-      <div className="w-full sm:max-w-[420px]">
+      <div className="w-full sm:max-w-105">
         <Input
           label="Username"
           placeholder="Username"
@@ -64,7 +64,7 @@ function Signup({ setIsLogin }) {
           )}
         />
       </div>
-      <div className="mt-2 w-full sm:max-w-[420px]">
+      <div className="mt-2 w-full sm:max-w-105">
         <Button btnText="Create account" />
         <p className="text-center text-[13.5px] text-[#9992AC] font-normal mt-5">
           Already have an account?{' '}
