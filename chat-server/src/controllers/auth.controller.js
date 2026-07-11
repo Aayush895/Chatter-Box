@@ -44,34 +44,54 @@ export async function signupController(req, res) {
       );
   }
 }
+
 export async function loginController(req, res) {
   const { email, password } = req.body;
-  // Login / auth procedure:
-  // 2. Create a middleware for JWT tokens.
-  // 3. We receive the access token from the UI side
-  // 4. If the access token is either undefined or expired, we check for the refresh token
-  // 5. If the refresh token is also not undefined or expired, we generate a fresh refresh token and from that refresh token, we generate a fresh access token that is sent back to the UI.
-  // 6. If the refresh token is present and not expired, we use it to generate a fresh access token and send it back to the UI.
-  // 7. The refresh token is stored in an `HTTP-Only` Cookie and the access-token is sent back to the UI by first sending the user data along with the access token to the service layer.
-  // 8. Service layer checks in the db if the user is present or not.
-  // 9. If the user is present, then send the login details as response and if not present, urge the user to signup first through response.
-  if (!email || !password) {
-    throw new AppError(
-      StatusCodes.BAD_REQUEST,
-      ReasonPhrases.BAD_REQUEST,
-      'Credentials not provided, please provide the required credentials and try again!',
-      'Incoming request missing either Email or Password or both'
-    );
-  }
 
-  const loginServiceResponse = await loginService(email, password);
-  return res.json(
-    new AppResponse(
-      StatusCodes.OK,
-      ReasonPhrases.OK,
-      'User was logged in successfully',
-      '',
-      loginServiceResponse
-    )
-  );
+  try {
+    if (!email || !password) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json(
+          new AppError(
+            StatusCodes.BAD_REQUEST,
+            ReasonPhrases.BAD_REQUEST,
+            'Credentials not provided, please provide the required credentials and try again!',
+            'Incoming request missing either Email or Password or both'
+          )
+        );
+    }
+
+    const { databaseResponseData, accessToken, refreshToken } = await loginService(email, password);
+
+    const options = {
+      httpOnly: true,
+      secure: true,
+    };
+    databaseResponseData.dataValues.accessToken = accessToken;
+    return res
+      .status(StatusCodes.OK)
+      .cookie('refreshToken', refreshToken, options)
+      .json(
+        new AppResponse(
+          StatusCodes.OK,
+          ReasonPhrases.OK,
+          'User was logged in successfully',
+          '',
+          databaseResponseData
+        )
+      );
+  } catch (error) {
+    const status = error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
+    return res
+      .status(status)
+      .json(
+        new AppError(
+          status,
+          error.reasonPhrase || ReasonPhrases.INTERNAL_SERVER_ERROR,
+          'Something went wrong on login',
+          error.message
+        )
+      );
+  }
 }

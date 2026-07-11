@@ -1,6 +1,5 @@
-import { StatusCodes, ReasonPhrases } from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import { User } from '../schemas/Auth/AuthSchemas.js';
-import { AppError } from '../utils/Request_Response_Classes.js';
 import { comparePassword, hashPassword } from '../utils/authUtilities.js';
 
 export async function registerUser(userName, email, password) {
@@ -28,24 +27,20 @@ export async function registerUser(userName, email, password) {
 }
 
 export async function loginUser(email, password) {
-  try {
-    const findUser = await User.findOne({ where: { email: email } });
-    if (comparePassword(password, findUser.password) == false) {
-      throw new AppError(
-        StatusCodes.UNAUTHORIZED,
-        ReasonPhrases.UNAUTHORIZED,
-        'Wrong password was entered. Please check the password and try again later!',
-        'Wrong password was provided by the user'
-      );
-    }
-    delete findUser.password;
-    return findUser;
-  } catch (error) {
-    return new AppError(
-      StatusCodes.BAD_REQUEST,
-      ReasonPhrases.BAD_REQUEST,
-      error.message,
-      'Something went wrong on user creation in DB'
-    );
+  const findUser = await User.findOne({ where: { email: email } });
+  if (!findUser) {
+    const err = new Error('No account found for this email');
+    err.statusCode = StatusCodes.UNAUTHORIZED; // deliberately not NOT_FOUND — see note below
+    throw err;
   }
+
+  if (comparePassword(password, findUser.password) == false) {
+    const err = new Error(
+      'Wrong password was entered. Please check the password and try again later!'
+    );
+    err.statusCode = StatusCodes.UNAUTHORIZED;
+    throw err;
+  }
+  delete findUser.dataValues.password;
+  return findUser;
 }
