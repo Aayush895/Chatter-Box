@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 import sequelize from './config/databaseConfig.js';
 import { CORSCONFIG, PORT } from './config/serverConfig.js';
 import logger from '../logger.js';
@@ -9,7 +10,7 @@ import { v0routerInstance } from './routes/index.route.js';
 const app = express();
 
 app.use(cors(CORSCONFIG));
-
+app.use(cookieParser());
 // logger configurations
 const morganFormat = ':method :url :status :response-time ms';
 
