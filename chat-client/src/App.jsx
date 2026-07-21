@@ -3,9 +3,8 @@ import { useHealthQuery } from './Hooks/Queries/useHealthQuery';
 import './App.css';
 
 function App() {
-  const { data, isLoading } = useHealthQuery();
+  const { isLoading } = useHealthQuery();
   if (isLoading) return <h1>Loading...</h1>;
-  console.log(data);
   return (
     <>
       <AuthPage />

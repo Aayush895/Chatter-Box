@@ -45,7 +45,7 @@ function Signup({ setIsLogin }) {
   }
 
   return (
-    <div className="bg-[#14111F] w-full px-6 sm:px-10 lg:px-14 py-10 lg:py-14 flex flex-col items-center lg:items-start justify-center">
+    <form className="bg-[#14111F] w-full px-6 sm:px-10 lg:px-14 py-10 lg:py-14 flex flex-col items-center lg:items-start justify-center">
       <Header
         headerText="Create your account"
         subHeaderText="Takes about 30 seconds. No credit card."
@@ -63,9 +63,7 @@ function Signup({ setIsLogin }) {
           maxLength="30"
           handleUserInformation={handleUserInformation}
           Hint={() => (
-            <p className="validator-hint">
-              Must be 3 to 30 characters containing only letters, numbers or dash
-            </p>
+            <p>Must be 3 to 30 characters containing only letters, numbers or dash</p>
           )}
         />
         <Input
@@ -74,8 +72,9 @@ function Signup({ setIsLogin }) {
           placeholder="mail@site.com"
           Svg={UserEmailSvg}
           type="email"
+          validator="^[^\s@]+@[^\s@]+\.[^\s@]+$"
           handleUserInformation={handleUserInformation}
-          Hint={() => <p className="validator-hint">Enter valid email address</p>}
+          Hint={() => <p>Enter valid email address</p>}
         />
         <Input
           id="input-password"
@@ -88,7 +87,7 @@ function Signup({ setIsLogin }) {
           minLength="8"
           handleUserInformation={handleUserInformation}
           Hint={() => (
-            <p className="validator-hint">
+            <p>
               Must be more than 8 characters, including at least one number, one lowercase
               letter, one uppercase letter
             </p>
@@ -105,7 +104,7 @@ function Signup({ setIsLogin }) {
           minLength="8"
           handleUserInformation={handleUserInformation}
           Hint={() => (
-            <p className="validator-hint">
+            <p>
               Must be more than 8 characters, including at least one number, one lowercase
               letter, one uppercase letter
             </p>
@@ -124,7 +123,7 @@ function Signup({ setIsLogin }) {
           </span>
         </p>
       </div>
-    </div>
+    </form>
   );
 }
 export default Signup;
