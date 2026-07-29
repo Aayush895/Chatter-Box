@@ -97,3 +97,32 @@ export async function loginController(req, res) {
       );
   }
 }
+
+export async function refreshTokensController(req, res) {
+  const newAccessToken = req.accessToken;
+
+  if (!newAccessToken) {
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json(
+        new AppError(
+          StatusCodes.UNAUTHORIZED,
+          ReasonPhrases.UNAUTHORIZED,
+          'New access token was not generated',
+          'New access token was not genrated'
+        )
+      );
+  }
+
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new AppResponse(
+        StatusCodes.OK,
+        ReasonPhrases.OK,
+        'New access token was generated successfully',
+        '',
+        newAccessToken
+      )
+    );
+}
