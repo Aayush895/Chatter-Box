@@ -5,3 +5,9 @@ export async function registerUser(userInformation) {
 
   return serverResponse.data;
 }
+
+export async function loginUser(userInfo) {
+  const serverResponse = await axiosInstance.post('/login', userInfo);
+
+  return serverResponse.data;
+}

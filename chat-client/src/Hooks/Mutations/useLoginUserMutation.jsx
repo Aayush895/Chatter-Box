@@ -1,24 +1,23 @@
 import { useContext } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import UserContext from '../../Context/UserContext';
-import { registerUser } from '../../Apis/authApi';
+import { loginUser } from '../../Apis/authApi';
 
-export function useRegisterUserMutation(userInformation) {
+export function useLoginUserMutation(userInformation) {
   const { userInfo, setUserInfo } = useContext(UserContext);
   const mutation = useMutation({
     mutationFn: async function () {
-      if (userInformation.password !== userInformation.confirmPassword) {
-        throw new Error('Passwords do not match');
-      }
-
-      const userResponse = await registerUser(userInformation);
+      console.log('clicked');
+      const userResponse = await loginUser(userInformation);
       return userResponse;
     },
     onSuccess: (data) => {
+      console.log(data.data);
       setUserInfo({
         ...userInfo,
         userName: data.data.userName,
         email: data.data.email,
+        accessToken: data.data.accessToken,
       });
     },
   });

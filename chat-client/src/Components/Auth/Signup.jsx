@@ -40,7 +40,8 @@ function Signup({ setIsLogin }) {
     }
   }
 
-  function handleFormSubmit() {
+  function handleFormSubmit(e) {
+    e.preventDefault();
     registerUserFn.mutate();
   }
 

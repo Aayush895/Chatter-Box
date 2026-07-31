@@ -10,7 +10,12 @@ function Input({
   maxLength = '',
   id,
   handleUserInformation,
+  handleLoginInformation,
 }) {
+  const onChangeFn = handleUserInformation
+    ? handleUserInformation
+    : handleLoginInformation;
+
   return (
     <div className="my-9">
       <label
@@ -30,7 +35,7 @@ function Input({
           maxLength={maxLength}
           pattern={validator && validator}
           title={title}
-          onChange={handleUserInformation}
+          onChange={onChangeFn}
           className="text-[13px] text-[#F3F1F7] placeholder:text-[#6B6480] font-normal"
         />
       </label>
