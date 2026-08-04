@@ -72,7 +72,10 @@ function Login({ setIsLogin }) {
           New to wisp?{' '}
           <span
             className="text-[#FF6B4D] font-semibold cursor-pointer hover:underline"
-            onClick={() => setIsLogin(false)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsLogin(false);
+            }}
           >
             Create an account
           </span>

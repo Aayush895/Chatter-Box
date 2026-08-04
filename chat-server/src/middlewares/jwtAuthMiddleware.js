@@ -5,11 +5,10 @@ import { JWT_ACC_SECRET, JWT_SECRET } from '../config/serverConfig.js';
 import { generateAccessToken } from '../utils/jwts.js';
 
 export async function jwtAuthMiddleware(req, res, next) {
-  const authHeader = req.headers.authorization;
+  const authHeader = req.headers.authorization || req.headers['Authorization'];
   const accessToken = authHeader?.replace('Bearer ', '');
 
   const refreshToken = req.cookies.refreshToken;
-
   let decodeAccessToken = null;
   if (accessToken) {
     decodeAccessToken = jwt.verify(accessToken, JWT_ACC_SECRET);

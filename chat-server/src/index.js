@@ -9,8 +9,8 @@ import { v0routerInstance } from './routes/index.route.js';
 // Setup a basic express server
 const app = express();
 
-app.use(cors(CORSCONFIG));
 app.use(cookieParser());
+app.use(cors(CORSCONFIG));
 // logger configurations
 const morganFormat = ':method :url :status :response-time ms';
 

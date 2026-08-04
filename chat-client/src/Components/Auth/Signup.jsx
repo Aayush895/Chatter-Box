@@ -118,7 +118,10 @@ function Signup({ setIsLogin }) {
           Already have an account?{' '}
           <span
             className="text-[#FF6B4D] font-semibold cursor-pointer hover:underline"
-            onClick={() => setIsLogin(true)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsLogin(true);
+            }}
           >
             Log in
           </span>

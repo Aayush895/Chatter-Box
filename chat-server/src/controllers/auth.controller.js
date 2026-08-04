@@ -67,7 +67,6 @@ export async function loginController(req, res) {
     const options = {
       httpOnly: true,
       secure: true,
-      sameSite: 'none',
     };
 
     databaseResponseData.dataValues.accessToken = accessToken;
