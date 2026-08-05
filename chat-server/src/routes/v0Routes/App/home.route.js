@@ -4,6 +4,6 @@ import { welcomeController } from '../../../controllers/chat.controller.js';
 
 const homeRouter = Router();
 
-homeRouter.post('/welcome', jwtAuthMiddleware, welcomeController);
+homeRouter.get('/welcome', jwtAuthMiddleware, welcomeController);
 
 export { homeRouter };
