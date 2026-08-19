@@ -42,38 +42,4 @@ const User = sequelize.define(
   }
 );
 
-const AuthSession = sequelize.define(
-  'AuthSession',
-  {
-    id: {
-      type: DataTypes.BIGINT,
-      autoIncrement: true,
-      primaryKey: true,
-      allowNull: false,
-      unique: true,
-    },
-    user_id: {
-      type: DataTypes.BIGINT,
-      allowNull: false,
-      references: {
-        model: User,
-        key: 'id',
-      },
-    },
-    refreshToken: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    expiresAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-  },
-  {
-    createdAt: true,
-    updatedAt: true,
-  }
-);
-
-export { User, AuthSession };
+export { User };
