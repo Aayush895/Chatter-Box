@@ -12,3 +12,15 @@ export async function welcomeDashboardApi(accessToken) {
 
   return serverResponse.data;
 }
+
+export async function fetchUsers(userSearchQuery, accessToken) {
+  const serverResponse = await axiosInstance.get(`/users?user=${userSearchQuery}`, {
+    headers: accessToken
+      ? {
+          Authorization: `Bearer ${accessToken}`,
+        }
+      : {},
+  });
+
+  return serverResponse.data;
+}

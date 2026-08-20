@@ -47,7 +47,7 @@ export async function welcomeController(req, res) {
 }
 
 export async function fetchUsersController(req, res) {
-  const { searchQuery } = req.body;
+  const searchQuery = req.query.user;
 
   if (!searchQuery) {
     return res

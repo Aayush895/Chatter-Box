@@ -5,6 +5,6 @@ import { welcomeController, fetchUsersController } from '../../../controllers/ch
 const homeRouter = Router();
 
 homeRouter.get('/welcome', jwtAuthMiddleware, welcomeController);
-homeRouter.post('/users', jwtAuthMiddleware, fetchUsersController);
+homeRouter.get('/users', jwtAuthMiddleware, fetchUsersController);
 
 export { homeRouter };
