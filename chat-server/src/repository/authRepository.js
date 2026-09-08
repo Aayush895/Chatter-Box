@@ -5,7 +5,6 @@ import { comparePassword, hashPassword } from '../utils/authUtilities.js';
 export async function registerUser(userName, email, password) {
   try {
     const hashedPassword = await hashPassword(password);
-    await User.sync();
     const createUser = await User.create({
       userName,
       email,

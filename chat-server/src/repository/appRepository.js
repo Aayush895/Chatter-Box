@@ -20,3 +20,22 @@ export async function fetchUsersRepository(searchQuery) {
 
   return searchResults;
 }
+
+export async function fetchUserDetails(userName) {
+  // Select * from Users where username = userName; --> Command to fetch the userName
+  const userDetails = await User.findOne({
+    where: {
+      userName: {
+        [Op.eq]: userName,
+      },
+    },
+  });
+
+  if (!userDetails) {
+    const error = new Error('Something went wrong while searching for user details');
+    error.statusCode = StatusCodes.NOT_FOUND;
+    throw error;
+  }
+
+  return userDetails;
+}
