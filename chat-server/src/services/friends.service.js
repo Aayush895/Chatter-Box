@@ -9,6 +9,12 @@ export async function sendFriendRequestService(senderUserName, receiverUserName)
   const fetchSenderDetails = await fetchUserDetails(senderUserName);
   const fetchReceiverDetails = await fetchUserDetails(receiverUserName);
 
+  if (fetchSenderDetails.id == fetchReceiverDetails.id) {
+    const error = new Error(`Invalid Request! Please try again`);
+    error.status = StatusCodes.BAD_REQUEST;
+    throw error;
+  }
+
   // Send both userdetails to the the friendship table
   const friendRequestResponse = await sendFriendRequestRepository(
     fetchSenderDetails,
@@ -21,5 +27,19 @@ export async function sendFriendRequestService(senderUserName, receiverUserName)
     throw error;
   }
 
-  return friendRequestResponse;
+  const responseData = {
+    id: friendRequestResponse.id,
+    senderInformation: {
+      senderId: friendRequestResponse.requesterId,
+      senderUserName: fetchSenderDetails.userName,
+      senderEmail: fetchSenderDetails.email,
+    },
+    receiverInformation: {
+      receiverId: friendRequestResponse.receiverId,
+      receiverUserName: fetchReceiverDetails.userName,
+      receiverEmail: fetchReceiverDetails.email,
+    },
+  };
+
+  return responseData;
 }

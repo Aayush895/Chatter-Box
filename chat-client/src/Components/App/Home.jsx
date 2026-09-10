@@ -6,10 +6,12 @@ import ChatList from './WelcomeDashboard/ChatList';
 import WelcomeBanner from './WelcomeDashboard/WelcomeBanner';
 
 function Home() {
-  const { userInfo } = useContext(UserContext);
+  const { userInfo, setUserInfo } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const { data, isError, error } = useWelcomeQuery(userInfo?.accessToken);
+  const { data, isError, error } = useWelcomeQuery(
+    JSON.parse(localStorage.getItem('accessToken'))
+  );
 
   // UseEffect when there is an error
   useEffect(() => {
@@ -24,6 +26,16 @@ function Home() {
       return;
     }
   }, [isError, error]);
+
+  useEffect(() => {
+    console.log(data);
+    setUserInfo({
+      ...userInfo,
+      userName: data?.data?.userInfo?.userName,
+      email: data?.data?.userInfo?.email,
+      accessToken: data?.data?.accessToken,
+    });
+  }, [data]);
 
   return (
     <div className="flex flex-col lg:flex-row justify-between items-stretch bg-[#14111F] min-h-screen w-full">

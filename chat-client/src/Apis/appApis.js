@@ -24,3 +24,15 @@ export async function fetchUsers(userSearchQuery, accessToken) {
 
   return serverResponse.data;
 }
+
+export async function sendFriendRequest(accessToken, senderUserName, receiverUserName) {
+  const serverResponse = await axiosInstance.post(
+    `/request`,
+    { senderUserName, receiverUserName },
+    {
+      headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
+    }
+  );
+
+  return serverResponse.data;
+}

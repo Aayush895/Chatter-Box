@@ -1,4 +1,22 @@
+import { useState, useContext } from 'react';
+import { useFriendRequestMutation } from '../../../Hooks/Mutations/useFriendRequestMutation';
+import UserContext from '../../../Context/UserContext';
 function SearchResultDialog({ users, isLoading }) {
+  const [receiverUserName, setReceiverUserName] = useState('');
+
+  const { userInfo } = useContext(UserContext);
+
+  const friendRequestMutationFn = useFriendRequestMutation(
+    userInfo?.accessToken,
+    userInfo?.userName,
+    receiverUserName
+  );
+
+  function handleFriendRequest(receiverUserName) {
+    setReceiverUserName(receiverUserName);
+    friendRequestMutationFn.mutate();
+  }
+
   return (
     <div className="border border-white/20 w-full max-w-md sm:w-92 bg-[#241E38] rounded-xl shadow-lg overflow-hidden">
       {isLoading ? (
@@ -28,7 +46,7 @@ function SearchResultDialog({ users, isLoading }) {
 
                   <button
                     type="button"
-                    onClick={() => console.log(`Send request to ${user.userName}`)}
+                    onClick={() => handleFriendRequest(user.userName)}
                     className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-full bg-indigo-600 text-white hover:bg-indigo-500 active:bg-indigo-700 transition-colors whitespace-nowrap"
                   >
                     Add Friend

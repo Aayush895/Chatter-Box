@@ -13,6 +13,7 @@ export function useLoginUserMutation(userInformation) {
       return userResponse;
     },
     onSuccess: (data) => {
+      localStorage.setItem('accessToken', JSON.stringify(data.data.accessToken));
       setUserInfo({
         ...userInfo,
         userName: data.data.userName,
