@@ -1,6 +1,9 @@
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { AppError, AppResponse } from '../utils/Request_Response_Classes.js';
-import { sendFriendRequestService } from '../services/friends.service.js';
+import {
+  sendFriendRequestService,
+  showAllPendingRequestsService,
+} from '../services/friends.service.js';
 
 // Protected route
 export async function sendFriendRequest(req, res) {
@@ -39,6 +42,37 @@ export async function sendFriendRequest(req, res) {
           status,
           'Something went wrong while sending the request to the users',
           `Cannot send friend request, please try again after sometime`,
+          error.message
+        )
+      );
+  }
+}
+
+export async function showAllPendingRequests(req, res) {
+  const userInfo = req.userInfo;
+  try {
+    const pendingRequestsServiceResponse = await showAllPendingRequestsService(userInfo.userId);
+
+    return res
+      .status(StatusCodes.OK)
+      .json(
+        new AppResponse(
+          StatusCodes.OK,
+          ReasonPhrases.OK,
+          'Pending requests were fetched successfully!',
+          '',
+          pendingRequestsServiceResponse
+        )
+      );
+  } catch (error) {
+    const status = error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
+    return res
+      .status(status)
+      .json(
+        new AppError(
+          status,
+          'Could not fetch pending requests',
+          'Not able to fetch the pending requests from the database',
           error.message
         )
       );

@@ -32,3 +32,17 @@
 - Based on whether the receiver accepts it or not, change the request.
 - The requester and the receiver id's will be the id's of the one who sent the request and the one who will receive the request respectively
 - If the requester and receiver id are same then that means the user is trying to send a request to itself. If that is the case then simply throw an error stating that it is not possible
+
+# How to view all the requests
+
+- Write a get request that fetches all the request for the loggedin users.
+- Filter out the requests based on the pending and accepted requests.
+- Send the filtered requests as responses to the users.
+- We will send the request everytime an add-request is clicked.
+
+# Accept friend request
+
+- User clicks on the notification icon
+- A `/friend-requests` get request is sent to fetch all the pending requests
+- If the user click on accept / reject btn, a patch request for `/friend-requests/:id` api is sent updating the status
+- If the request is accepted, we send a request to the server fetching all the requests that are accepted which signifies all the friends.

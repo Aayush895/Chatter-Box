@@ -1,11 +1,11 @@
 import { StatusCodes } from 'http-status-codes';
 import { fetchUserDetails } from '../repository/appRepository.js';
-import { sendFriendRequestRepository } from '../repository/friendsRepository.js';
+import {
+  sendFriendRequestRepository,
+  showAllpendingRequestsRepository,
+} from '../repository/friendsRepository.js';
 
 export async function sendFriendRequestService(senderUserName, receiverUserName) {
-  // Find if the senderUsername & receiverUsername exist in the Users table or not
-  // If both of them exist in the users table then send the DB request to the friendship table to store the ids of the sender & receiver
-
   const fetchSenderDetails = await fetchUserDetails(senderUserName);
   const fetchReceiverDetails = await fetchUserDetails(receiverUserName);
 
@@ -27,19 +27,17 @@ export async function sendFriendRequestService(senderUserName, receiverUserName)
     throw error;
   }
 
-  const responseData = {
-    id: friendRequestResponse.id,
-    senderInformation: {
-      senderId: friendRequestResponse.requesterId,
-      senderUserName: fetchSenderDetails.userName,
-      senderEmail: fetchSenderDetails.email,
-    },
-    receiverInformation: {
-      receiverId: friendRequestResponse.receiverId,
-      receiverUserName: fetchReceiverDetails.userName,
-      receiverEmail: fetchReceiverDetails.email,
-    },
-  };
+  return friendRequestResponse;
+}
 
-  return responseData;
+export async function showAllPendingRequestsService(userId) {
+  const allPendingRequests = await showAllpendingRequestsRepository(userId);
+
+  if (!allPendingRequests) {
+    const error = new Error(`Could not fetch pending requests`);
+    error.status = StatusCodes.INTERNAL_SERVER_ERROR;
+    throw error;
+  }
+
+  return allPendingRequests;
 }

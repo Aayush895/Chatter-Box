@@ -27,6 +27,7 @@ export async function loginService(email, password) {
   const databaseResponseData = await loginUser(email, password);
   const refreshToken = generateRefreshToken(
     {
+      userId: databaseResponseData.id,
       userName: databaseResponseData.userName,
       email: databaseResponseData.email,
     },
@@ -36,6 +37,7 @@ export async function loginService(email, password) {
 
   const accessToken = generateAccessToken(
     {
+      userId: databaseResponseData.id,
       userName: databaseResponseData.userName,
       email: databaseResponseData.email,
     },
