@@ -36,3 +36,11 @@ export async function sendFriendRequest(accessToken, senderUserName, receiverUse
 
   return serverResponse.data;
 }
+
+export async function fetchPendingRequests(accessToken) {
+  const serverResponse = await axiosInstance.get(`/requests`, {
+    headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
+  });
+
+  return serverResponse.data;
+}
