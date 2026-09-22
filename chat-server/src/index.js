@@ -1,13 +1,16 @@
 import express from 'express';
+import { createServer } from 'http';
 import cors from 'cors';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import sequelize from './config/databaseConfig.js';
+import intializeSocketServer from './sockets/socket.js';
 import { CORSCONFIG, PORT } from './config/serverConfig.js';
 import logger from '../logger.js';
 import { v0routerInstance } from './routes/index.route.js';
 // Setup a basic express server
 const app = express();
+const httpServer = createServer(app);
 
 app.use(cookieParser());
 app.use(cors(CORSCONFIG));
@@ -32,10 +35,14 @@ app.use(
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+const io = intializeSocketServer(httpServer);
+
+// Assign io to the app object as an object property so that socket server instance can be accessed in the controller as well.
+app.io = io;
 // Routes
 app.use('/api', v0routerInstance);
 
-app.listen(PORT, async () => {
+httpServer.listen(PORT, async () => {
   try {
     await sequelize.authenticate();
     console.log('Connection has been established successfully.');

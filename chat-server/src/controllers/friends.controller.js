@@ -21,6 +21,16 @@ export async function sendFriendRequest(req, res) {
   // Send the username and receiver name to the service layer
   try {
     const requestServiceResponse = await sendFriendRequestService(senderUserName, receiverUserName);
+    // Push the notification to the receiver of the friend request
+    req.app.io
+      .to(`user:${requestServiceResponse?.receiverDetails?.id}`)
+      .emit('friend-request:received', {
+        id: requestServiceResponse.id,
+        senderId: requestServiceResponse.senderDetails.id,
+        receiverId: requestServiceResponse.receiverDetails.id,
+        senderName: requestServiceResponse.senderDetails.userName,
+        receiverName: requestServiceResponse.receiverDetails.userName,
+      });
 
     return res
       .status(StatusCodes.OK)

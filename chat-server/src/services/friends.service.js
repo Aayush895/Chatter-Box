@@ -27,7 +27,23 @@ export async function sendFriendRequestService(senderUserName, receiverUserName)
     throw error;
   }
 
-  return friendRequestResponse;
+  const responseData = {
+    sentRequestData: friendRequestResponse,
+    senderDetails: {
+      id: fetchSenderDetails.id,
+      userName: fetchSenderDetails.userName,
+      email: fetchSenderDetails.email,
+      lastSeen: fetchSenderDetails.lastSeen,
+    },
+    receiverDetails: {
+      id: fetchReceiverDetails.id,
+      userName: fetchReceiverDetails.userName,
+      email: fetchReceiverDetails.email,
+      lastSeen: fetchReceiverDetails.lastSeen,
+    },
+  };
+
+  return responseData;
 }
 
 export async function showAllPendingRequestsService(userId) {
