@@ -79,7 +79,8 @@ function ChatList() {
           </div>
           <div className="ml-5 min-w-0">
             <p className="truncate">
-              {userInfo.userName.charAt(0).toUpperCase() + userInfo.userName.slice(1)}
+              {userInfo.userName &&
+                userInfo.userName.charAt(0).toUpperCase() + userInfo.userName.slice(1)}
             </p>
             <div className="flex items-center gap-3">
               <span className="relative flex h-2 w-2">

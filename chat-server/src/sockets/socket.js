@@ -3,7 +3,9 @@ import { jwtAuthSocketMiddleware } from '../middlewares/jwtAuthSocketMiddleware.
 
 function intializeSocketServer(httpServer) {
   // Initializing a web socket server
-  const io = new Server(httpServer);
+  const io = new Server(httpServer, {
+    cors: 'http://localhost:5173',
+  });
 
   io.use(jwtAuthSocketMiddleware);
 

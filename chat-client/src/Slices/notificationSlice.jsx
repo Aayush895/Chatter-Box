@@ -4,6 +4,7 @@ const pendingRequestsnotificationSlice = createSlice({
   name: 'notifications',
   initialState: {
     isNotificationVisible: false,
+    incomingRequest: null,
   },
   reducers: {
     showNotification: function (state) {
@@ -12,10 +13,15 @@ const pendingRequestsnotificationSlice = createSlice({
     hideNotification: function (state) {
       if (state.isNotificationVisible == true) state.isNotificationVisible = false;
     },
+    getIncomingRequestData: function (state, requestData) {
+      if (!state.incomingRequest) {
+        state.incomingRequest = requestData;
+      }
+    },
   },
 });
 
-export const { showNotification, hideNotification } =
+export const { showNotification, hideNotification, getIncomingRequestData } =
   pendingRequestsnotificationSlice.actions;
 
 export default pendingRequestsnotificationSlice.reducer;
