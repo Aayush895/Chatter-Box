@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useFetchPendingRequests } from '../../../Hooks/Queries/useFetchPendingRequests';
 import { IoIosSettings, IoIosNotifications } from 'react-icons/io';
 import { BsEmojiNeutral } from 'react-icons/bs';
 import UserContext from '../../../Context/UserContext';
@@ -17,8 +18,11 @@ function ChatList() {
   });
   const dispatch = useDispatch();
 
+  const { data, isLoading, refetch } = useFetchPendingRequests(userInfo.accessToken);
+
   function handleShowNotification() {
     dispatch(showNotification());
+    refetch();
   }
 
   function handleHideNotification() {
@@ -52,7 +56,12 @@ function ChatList() {
         </div>
       </div>
 
-      <Notification isVisible={isNotificationVisible} onClose={handleHideNotification} />
+      <Notification
+        isVisible={isNotificationVisible}
+        onClose={handleHideNotification}
+        pendingRequestData={data?.data}
+        isLoading={isLoading}
+      />
 
       <div className="w-full mb-10 shrink-0">
         <input

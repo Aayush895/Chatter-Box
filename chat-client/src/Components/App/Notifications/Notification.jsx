@@ -1,13 +1,7 @@
-import { useContext } from 'react';
-import { useFetchPendingRequests } from '../../../Hooks/Queries/useFetchPendingRequests';
-import UserContext from '../../../Context/UserContext';
 import { IoMdCloseCircle } from 'react-icons/io';
 import PendingRequests from './PendingRequests';
 
-function Notification({ isVisible, onClose }) {
-  const { userInfo } = useContext(UserContext);
-
-  const { data, isLoading } = useFetchPendingRequests(userInfo.accessToken);
+function Notification({ isVisible, onClose, pendingRequestData, isLoading }) {
   return (
     <div
       className={`absolute top-16 left-3 right-3 z-50 origin-top-right border border-slate-600 rounded-3xl bg-[#1A1628] shadow-xl transition-all duration-200 ease-out h-100  ${
@@ -25,9 +19,11 @@ function Notification({ isVisible, onClose }) {
         />
       </div>
       {isLoading ? (
-        <span className="loading loading-bars loading-xl"></span>
+        <div className="flex justify-center items-center h-[calc(100%-3.25rem)]">
+          <span className="loading loading-bars loading-xl"></span>
+        </div>
       ) : (
-        <PendingRequests pendingRequests={data?.data} />
+        <PendingRequests pendingRequests={pendingRequestData} />
       )}
     </div>
   );
