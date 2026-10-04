@@ -1,19 +1,19 @@
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
+import { ToastContainer, toast, Slide } from 'react-toastify';
 import { useWelcomeQuery } from '../../Hooks/Queries/useWelcomeQuery';
-import { io } from 'socket.io-client';
 import UserContext from '../../Context/UserContext';
 import ChatList from './WelcomeDashboard/ChatList';
 import WelcomeBanner from './WelcomeDashboard/WelcomeBanner';
-import { initialiseSocket } from '../../Slices/socketSlice';
-import { SOCKET_ENDPOINT } from '../../Config/clientConfigs';
-
+// TODO: Once token expires, I get brought back to the login page but on refresh, the toast keeps on playing. Need to fix that issue as well.
 function Home() {
   const { userInfo, setUserInfo } = useContext(UserContext);
   const navigate = useNavigate();
-  const initialSocketState = useSelector((state) => state.clientSocket);
   const dispatch = useDispatch();
+  const incomingRequestState = useSelector(
+    (state) => state.pendingRequestsNotification.incomingRequest
+  );
 
   const { data, isError, error, isSuccess } = useWelcomeQuery(
     JSON.parse(localStorage.getItem('accessToken') || '')
@@ -22,12 +22,17 @@ function Home() {
   // UseEffect when there is an error
   useEffect(() => {
     if (isError) {
-      console.log(error.response);
       navigate('/', {
         state: {
           errorDescription: error.response.data.description,
           status: error.response.statusText,
         },
+      });
+      localStorage.removeItem('accessToken');
+      setUserInfo({
+        userName: '',
+        email: '',
+        accessToken: '',
       });
       return;
     }
@@ -45,41 +50,41 @@ function Home() {
 
   // useEffect when the component has finished mounting to establish a websocket connection
   useEffect(() => {
-    // TODO: Need to fix the issue of socket connection
-    // Error: Cannot send 'non-serializable' data as payload in redux
-    let socket = null;
     if (isSuccess) {
-      socket = io(SOCKET_ENDPOINT, {
-        auth: {
-          accessToken: data?.data?.accessToken,
-        },
-      });
-
-      dispatch(initialiseSocket(socket));
+      dispatch({ type: 'socket/connect', payload: data?.data?.accessToken });
     }
 
     return () => {
-      socket?.disconnect();
+      dispatch({ type: 'socket/disconnect' });
     };
   }, [isSuccess]);
 
-  // useEffect for handling all the listeners from the socket
+  // If the request was successfully sent then this effect will run
   useEffect(() => {
-    console.log('LOGGING SOCKET: ', initialSocketState);
-    initialSocketState?.on('friend-request:received', (data) => {
-      console.log('LOGGING DATA FROM RECEIVER END: ', data);
-    });
-
-    return () => {
-      initialSocketState?.off('friend-request:received');
-    };
-  }, [initialSocketState]);
+    if (
+      incomingRequestState &&
+      typeof incomingRequestState == 'object' &&
+      Object.keys(incomingRequestState).length > 0
+    ) {
+      toast.success(`${incomingRequestState.senderName} sent a connection request`, {
+        position: 'top-right',
+        autoClose: 2000,
+        closeOnClick: true,
+        pauseOnHover: true,
+        theme: 'colored',
+        transition: Slide,
+      });
+    }
+  }, [incomingRequestState]);
 
   return (
-    <div className="flex flex-col lg:flex-row justify-between items-stretch bg-[#14111F] min-h-screen w-full">
-      <ChatList />
-      <WelcomeBanner username={data?.data?.userInfo?.userName} />
-    </div>
+    <>
+      <div className="flex flex-col lg:flex-row justify-between items-stretch bg-[#14111F] min-h-screen w-full">
+        <ChatList />
+        <WelcomeBanner username={data?.data?.userInfo?.userName} />
+      </div>
+      <ToastContainer />
+    </>
   );
 }
 

@@ -1,26 +1,33 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
+import { toast, Slide } from 'react-toastify';
 import { useFriendRequestMutation } from '../../../Hooks/Mutations/useFriendRequestMutation';
 import UserContext from '../../../Context/UserContext';
-function SearchResultDialog({ users, isLoading }) {
-  const [receiverUserName, setReceiverUserName] = useState('');
 
+function SearchResultDialog({ users, isLoading, setSearchResultDialog }) {
   const { userInfo } = useContext(UserContext);
 
   const friendRequestMutationFn = useFriendRequestMutation(
     userInfo?.accessToken,
-    userInfo?.userName,
-    receiverUserName
+    userInfo?.userName
   );
 
   function handleFriendRequest(receiverUserName) {
-    setReceiverUserName(receiverUserName);
-    friendRequestMutationFn.mutate();
+    setSearchResultDialog(false);
+    friendRequestMutationFn.mutate(receiverUserName);
+    toast.success(`Connection request was successfully sent to ${receiverUserName}`, {
+      position: 'top-right',
+      autoClose: 2000,
+      closeOnClick: true,
+      pauseOnHover: true,
+      theme: 'colored',
+      transition: Slide,
+    });
   }
 
   return (
     <div className="border border-white/20 w-full max-w-md sm:w-92 bg-[#241E38] rounded-xl shadow-lg overflow-hidden">
       {isLoading ? (
-        <p>
+        <p className="px-2">
           Loading... <span className="loading loading-dots loading-xl"></span>
         </p>
       ) : users && users.length > 0 ? (

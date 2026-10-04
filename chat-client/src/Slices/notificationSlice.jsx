@@ -15,7 +15,7 @@ const pendingRequestsnotificationSlice = createSlice({
     },
     getIncomingRequestData: function (state, requestData) {
       if (!state.incomingRequest) {
-        state.incomingRequest = requestData;
+        state.incomingRequest = requestData.payload;
       }
     },
   },

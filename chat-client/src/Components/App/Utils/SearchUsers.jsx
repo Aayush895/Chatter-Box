@@ -6,6 +6,7 @@ import SearchResultDialog from './SearchResultDialog';
 
 function SearchUsers() {
   const [userSearchQuery, setUserSearchQuery] = useState('');
+  const [searchResultDialog, setSearchResultDialog] = useState(false);
   const { userInfo } = useContext(UserContext);
   const debouncedVal = useDebounceSearch(userSearchQuery);
   const { data, isLoading } = useFetchUsersQuery(debouncedVal, userInfo.accessToken);
@@ -14,8 +15,9 @@ function SearchUsers() {
     const { value } = e.target;
     if (value.trim().length == 0) return;
     setUserSearchQuery(value);
+    setSearchResultDialog(true);
   }
-
+  // TODO: Need to handle the part where user sends the request more than once
   return (
     <>
       <div className="mb-5 w-full flex justify-center items-center">
@@ -44,8 +46,12 @@ function SearchUsers() {
           />
         </label>
       </div>
-      {userSearchQuery && userSearchQuery.length > 0 && (
-        <SearchResultDialog users={data?.data} isLoading={isLoading} />
+      {userSearchQuery && userSearchQuery.length > 0 && searchResultDialog && (
+        <SearchResultDialog
+          users={data?.data}
+          isLoading={isLoading}
+          setSearchResultDialog={setSearchResultDialog}
+        />
       )}
     </>
   );
