@@ -22,6 +22,10 @@ export function socketMiddleware(url) {
             });
           });
 
+          socket?.on('request-status', (data) => {
+            console.log(data);
+          });
+
           break;
         }
 
@@ -32,6 +36,12 @@ export function socketMiddleware(url) {
         }
 
         // Similarly, if you want to emit any action from client side add it in case
+
+        // TODO: Need to test it once implemented it properly with client
+        case 'friend-request:accept': {
+          socket?.emit('friend-request:accept', action.payload);
+          break;
+        }
       }
 
       next(action);

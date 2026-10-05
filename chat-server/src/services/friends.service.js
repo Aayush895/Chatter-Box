@@ -3,6 +3,7 @@ import { fetchUserDetails } from '../repository/appRepository.js';
 import {
   sendFriendRequestRepository,
   showAllpendingRequestsRepository,
+  updateFriendshipStatusRepository,
 } from '../repository/friendsRepository.js';
 
 export async function sendFriendRequestService(senderUserName, receiverUserName) {
@@ -56,4 +57,20 @@ export async function showAllPendingRequestsService(userId) {
   }
 
   return allPendingRequests;
+}
+
+export async function updateFriendRequestStatusService({ senderId, receiverId, friendshipStatus }) {
+  const updatedFriendshipStatus = await updateFriendshipStatusRepository({
+    senderId,
+    receiverId,
+    friendshipStatus,
+  });
+
+  if (!updatedFriendshipStatus) {
+    const error = new Error(`Could not update the friendship status. Something went wrong in DB`);
+    error.status = StatusCodes.INTERNAL_SERVER_ERROR;
+    throw error;
+  }
+
+  return updatedFriendshipStatus;
 }

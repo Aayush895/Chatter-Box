@@ -1,5 +1,7 @@
 import { Server } from 'socket.io';
 import { jwtAuthSocketMiddleware } from '../middlewares/jwtAuthSocketMiddleware.js';
+import { updateFriendRequestStatusService } from '../services/friends.service.js';
+import { StatusCodes } from 'http-status-codes';
 
 function intializeSocketServer(httpServer) {
   // Initializing a web socket server
@@ -19,6 +21,38 @@ function intializeSocketServer(httpServer) {
     const userId = userInfo.userId;
     console.log('ROOM ID: ', userId);
     socket.join(`user:${userId}`);
+    // TODO: Need to test it once integrated with client
+    socket.on('friend-request:accept', async (data, acknowledge) => {
+      const { senderId, receiverId } = data;
+      let { friendshipStatus } = data;
+      if (!senderId || !receiverId || !friendshipStatus) {
+        const err = new Error(`Please provide relevant data`);
+        err.statusCode = StatusCodes.BAD_REQUEST;
+        err.code = 'VALIDATION_ERROR';
+        throw err;
+      }
+      friendshipStatus = typeof friendshipStatus == 'string' && friendshipStatus.toLowerCase();
+      try {
+        const response = await updateFriendRequestStatusService({
+          senderId,
+          receiverId,
+          friendshipStatus,
+        });
+
+        socket.emit('request-status', response);
+        acknowledge({ success: true, data: response });
+      } catch (error) {
+        const isKnownError = Boolean(error.statusCode) && error.statusCode < 500;
+        acknowledge({
+          success: false,
+          error: {
+            code: error.code || 'INTERNAL_ERROR',
+            message: isKnownError ? error.message : 'Something went wrong',
+            statusCode: error.statusCode || 500,
+          },
+        });
+      }
+    });
   });
 
   return io;
