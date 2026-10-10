@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import { fetchUserDetails } from '../repository/appRepository.js';
 import {
+  fetchUserFriendsRepository,
   sendFriendRequestRepository,
   showAllpendingRequestsRepository,
   updateFriendshipStatusRepository,
@@ -73,4 +74,15 @@ export async function updateFriendRequestStatusService({ senderId, receiverId, f
   }
 
   return updatedFriendshipStatus;
+}
+
+export async function fetchUserFriendsService(userId) {
+  const friendsList = await fetchUserFriendsRepository(userId);
+  if (!friendsList) {
+    const error = new Error(`Could not fetch users friends from the DB`);
+    error.status = StatusCodes.INTERNAL_SERVER_ERROR;
+    throw error;
+  }
+
+  return friendsList;
 }

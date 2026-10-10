@@ -4,7 +4,9 @@ const pendingRequestsnotificationSlice = createSlice({
   name: 'notifications',
   initialState: {
     isNotificationVisible: false,
-    incomingRequest: null,
+    incomingRequest: [],
+    lastAcceptedRequestData: null,
+    lastDeclinedRequestData: null,
   },
   reducers: {
     showNotification: function (state) {
@@ -14,14 +16,23 @@ const pendingRequestsnotificationSlice = createSlice({
       if (state.isNotificationVisible == true) state.isNotificationVisible = false;
     },
     getIncomingRequestData: function (state, requestData) {
-      if (!state.incomingRequest) {
-        state.incomingRequest = requestData.payload;
-      }
+      state.incomingRequest.push(requestData.payload);
+    },
+    storeLastAcceptedRequestedData: function (state, acceptedRequestData) {
+      state.lastAcceptedRequestData = acceptedRequestData.payload;
+    },
+    storeLastDeclinedRequestData: function (state, declinedRequestData) {
+      state.lastDeclinedRequestData = declinedRequestData;
     },
   },
 });
 
-export const { showNotification, hideNotification, getIncomingRequestData } =
-  pendingRequestsnotificationSlice.actions;
+export const {
+  showNotification,
+  hideNotification,
+  getIncomingRequestData,
+  storeLastAcceptedRequestedData,
+  storeLastDeclinedRequestData,
+} = pendingRequestsnotificationSlice.actions;
 
 export default pendingRequestsnotificationSlice.reducer;

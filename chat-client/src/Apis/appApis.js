@@ -44,3 +44,15 @@ export async function fetchPendingRequests(accessToken) {
 
   return serverResponse.data;
 }
+
+export async function fetchFriendsList(accessToken, userId) {
+  const serverResponse = await axiosInstance.get(`/friends?id=${userId}`, {
+    headers: accessToken
+      ? {
+          Authorization: `Bearer ${accessToken}`,
+        }
+      : {},
+  });
+
+  return serverResponse.data;
+}

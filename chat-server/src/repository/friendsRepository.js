@@ -1,4 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
+import { Op } from 'sequelize';
 import { Friendship } from '../schemas/FriendshipSchema.js';
 import { User } from '../schemas/Auth/AuthSchemas.js';
 
@@ -83,6 +84,7 @@ export async function updateFriendshipStatusRepository({ senderId, receiverId, f
         where: {
           requesterId: senderId,
           receiverId: receiverId,
+          status: 'pending',
         },
       }
     );
@@ -124,6 +126,27 @@ export async function updateFriendshipStatusRepository({ senderId, receiverId, f
       throw err;
     }
 
+    error.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+    throw error;
+  }
+}
+
+export async function fetchUserFriendsRepository(userId) {
+  try {
+    const friendships = await Friendship.findAll({
+      where: {
+        status: 'accepted',
+        [Op.or]: [{ requesterId: userId }, { receiverId: userId }],
+      },
+      include: [
+        { model: User, as: 'requester', attributes: ['id', 'userName'] },
+        { model: User, as: 'receiver', attributes: ['id', 'userName'] },
+      ],
+    });
+
+    // Each row has both users; keep whichever one is not the current user
+    return friendships.map(f => (f.requesterId === Number(userId) ? f.receiver : f.requester));
+  } catch (error) {
     error.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
     throw error;
   }

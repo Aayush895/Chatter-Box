@@ -13,6 +13,7 @@ function PendingRequests({ pendingRequests }) {
                     pendingRequest.requester.userName.charAt(0).toUpperCase() +
                     pendingRequest.requester.userName.slice(1)
                   }
+                  requestData={pendingRequest}
                 />
               </li>
             );

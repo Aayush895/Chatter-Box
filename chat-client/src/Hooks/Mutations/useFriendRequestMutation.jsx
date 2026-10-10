@@ -9,7 +9,6 @@ export function useFriendRequestMutation(accessToken, sendUserName) {
         sendUserName,
         receiverUserName
       );
-      console.log('FriendRequest Resp: ', response);
       return response;
     },
   });

@@ -3,6 +3,8 @@ import { AppError, AppResponse } from '../utils/Request_Response_Classes.js';
 import {
   sendFriendRequestService,
   showAllPendingRequestsService,
+  updateFriendRequestStatusService,
+  fetchUserFriendsService,
 } from '../services/friends.service.js';
 
 // Protected route
@@ -83,6 +85,54 @@ export async function showAllPendingRequests(req, res) {
           status,
           'Could not fetch pending requests',
           'Not able to fetch the pending requests from the database',
+          error.message
+        )
+      );
+  }
+}
+
+export async function updateFriendshipStatusController({ senderId, receiverId, friendshipStatus }) {
+  return await updateFriendRequestStatusService({
+    senderId,
+    receiverId,
+    friendshipStatus,
+  });
+}
+
+export async function fetchUserFriendsController(req, res) {
+  const { userId } = req.query;
+
+  if (!userId) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json(
+        new AppError(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST, 'User Id is missing!', '')
+      );
+  }
+
+  try {
+    const friends = await fetchUserFriendsService(userId);
+
+    return res
+      .status(StatusCodes.OK)
+      .json(
+        new AppResponse(
+          StatusCodes.OK,
+          ReasonPhrases.OK,
+          'Friends fetched successfully!',
+          '',
+          friends
+        )
+      );
+  } catch (error) {
+    const status = error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
+    return res
+      .status(status)
+      .json(
+        new AppError(
+          status,
+          'Something went wrong while fetching friends',
+          'Cannot fetch friends, please try again after sometime',
           error.message
         )
       );

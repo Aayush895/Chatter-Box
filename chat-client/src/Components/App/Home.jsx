@@ -15,9 +15,17 @@ function Home() {
     (state) => state.pendingRequestsNotification.incomingRequest
   );
 
-  const { data, isError, error, isSuccess } = useWelcomeQuery(
-    JSON.parse(localStorage.getItem('accessToken') || '')
-  );
+  const getStoredToken = () => {
+    try {
+      return JSON.parse(localStorage.getItem('accessToken'));
+    } catch {
+      return null;
+    }
+  };
+
+  const accessToken = getStoredToken();
+
+  const { data, isError, error, isSuccess } = useWelcomeQuery(accessToken);
 
   // UseEffect when there is an error
   useEffect(() => {
