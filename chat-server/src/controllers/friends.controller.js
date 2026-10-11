@@ -100,9 +100,9 @@ export async function updateFriendshipStatusController({ senderId, receiverId, f
 }
 
 export async function fetchUserFriendsController(req, res) {
-  const { userId } = req.query;
+  const { id } = req.query;
 
-  if (!userId) {
+  if (!id) {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json(
@@ -111,7 +111,7 @@ export async function fetchUserFriendsController(req, res) {
   }
 
   try {
-    const friends = await fetchUserFriendsService(userId);
+    const friends = await fetchUserFriendsService(id);
 
     return res
       .status(StatusCodes.OK)

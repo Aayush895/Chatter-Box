@@ -1,7 +1,7 @@
 import { Server } from 'socket.io';
-import { StatusCodes } from 'http-status-codes';
 import { jwtAuthSocketMiddleware } from '../middlewares/jwtAuthSocketMiddleware.js';
 import { updateFriendshipStatusController } from '../controllers/friends.controller.js';
+import { acknowledgementCallback, parseIncomingData } from '../utils/socketUtils.js';
 
 function intializeSocketServer(httpServer) {
   // Initializing a web socket server
@@ -20,20 +20,9 @@ function intializeSocketServer(httpServer) {
     console.log('ROOM ID: ', userId);
     socket.join(`user:${userId}`);
 
-    // TODO: Find a way to segregate these event listener logics
     socket.on('friend-request:accept', async (data, acknowledge) => {
-      const { senderId, receiverId } = data;
-      let { friendshipStatus } = data;
-
-      if (!senderId || !receiverId || !friendshipStatus) {
-        const err = new Error(`Please provide relevant data`);
-        err.statusCode = StatusCodes.BAD_REQUEST;
-        err.code = 'VALIDATION_ERROR';
-        throw err;
-      }
-
-      friendshipStatus = typeof friendshipStatus == 'string' && friendshipStatus.toLowerCase();
       try {
+        const { senderId, receiverId, friendshipStatus } = parseIncomingData(data);
         const response = await updateFriendshipStatusController({
           senderId,
           receiverId,
@@ -43,15 +32,7 @@ function intializeSocketServer(httpServer) {
         io.to(`user:${senderId}`).to(`user:${receiverId}`).emit('request-status', response);
         acknowledge({ success: true, data: response });
       } catch (error) {
-        const isKnownError = Boolean(error.statusCode) && error.statusCode < 500;
-        acknowledge({
-          success: false,
-          error: {
-            code: error.code || 'INTERNAL_ERROR',
-            message: isKnownError ? error.message : 'Something went wrong',
-            statusCode: error.statusCode || 500,
-          },
-        });
+        acknowledge(acknowledgementCallback(error));
       }
     });
   });

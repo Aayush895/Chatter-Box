@@ -47,7 +47,6 @@ export function socketMiddleware(url) {
 
         // Similarly, if you want to emit any action from client side add it in case
 
-        // TODO: Need to test it once implemented it properly with client
         case 'notifications/acceptFriendRequest': {
           socket?.emit('friend-request:accept', action.payload, (response) => {
             console.log(response);

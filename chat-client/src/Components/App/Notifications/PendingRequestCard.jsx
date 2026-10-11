@@ -1,13 +1,18 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { toast, Slide } from 'react-toastify';
+import { useContext } from 'react';
+import { useDispatch } from 'react-redux';
 import { HiMiniUserPlus } from 'react-icons/hi2';
 import { hideNotification } from '../../../Slices/notificationSlice';
+import { useFetchFriendsList } from '../../../Hooks/Queries/useFetchFriendsList';
+import UserContext from '../../../Context/UserContext';
 
 function PendingRequestCard({ userName, requestData }) {
   const dispatch = useDispatch();
-  const lastAcceptedRequestState = useSelector(
-    (state) => state.pendingRequestsNotification.lastAcceptedRequestData
+
+  const { userInfo } = useContext(UserContext);
+
+  const { data, isLoading, refetch } = useFetchFriendsList(
+    userInfo.accessToken,
+    requestData?.receiver?.id
   );
 
   function handleAcceptRequest(e) {
@@ -21,21 +26,11 @@ function PendingRequestCard({ userName, requestData }) {
     });
 
     dispatch(hideNotification());
+    refetch();
   }
-  // TODO: Have to work on making notification go live on both ends
-  useEffect(() => {
-    if (lastAcceptedRequestState) {
-      toast.success(`Friend request accepted`, {
-        position: 'top-right',
-        autoClose: 2000,
-        closeOnClick: true,
-        pauseOnHover: true,
-        theme: 'colored',
-        transition: Slide,
-      });
-    }
-  }, [lastAcceptedRequestState]);
 
+  function handleDeclineRequest() {}
+  console.log('LOGGING FRIENDS LIST: ', data);
   return (
     <div className="px-5 flex border-b border-slate-600 items-center">
       <div className="h-10 w-10 rounded-full flex items-center justify-center bg-orange-900">
@@ -52,7 +47,10 @@ function PendingRequestCard({ userName, requestData }) {
           >
             Accept
           </button>
-          <button className="w-[45%] bg-transparent text-white border border-[#2C2640] hover:bg-[#241E38] transition-colors duration-200 rounded-[7px] text-[14.5px] h-8 normal-case font-bold cursor-pointer">
+          <button
+            className="w-[45%] bg-transparent text-white border border-[#2C2640] hover:bg-[#241E38] transition-colors duration-200 rounded-[7px] text-[14.5px] h-8 normal-case font-bold cursor-pointer"
+            onClick={handleDeclineRequest}
+          >
             Decline
           </button>
         </div>

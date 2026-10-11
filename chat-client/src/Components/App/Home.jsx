@@ -6,6 +6,7 @@ import { useWelcomeQuery } from '../../Hooks/Queries/useWelcomeQuery';
 import UserContext from '../../Context/UserContext';
 import ChatList from './WelcomeDashboard/ChatList';
 import WelcomeBanner from './WelcomeDashboard/WelcomeBanner';
+
 // TODO: Once token expires, I get brought back to the login page but on refresh, the toast keeps on playing. Need to fix that issue as well.
 function Home() {
   const { userInfo, setUserInfo } = useContext(UserContext);
@@ -13,6 +14,10 @@ function Home() {
   const dispatch = useDispatch();
   const incomingRequestState = useSelector(
     (state) => state.pendingRequestsNotification.incomingRequest
+  );
+
+  const lastAcceptedRequestState = useSelector(
+    (state) => state.pendingRequestsNotification.lastAcceptedRequestData
   );
 
   const getStoredToken = () => {
@@ -67,23 +72,58 @@ function Home() {
     };
   }, [isSuccess]);
 
-  // If the request was successfully sent then this effect will run
+  // If the request was successfully sent & accepted or declined, then this effect will run
   useEffect(() => {
+    if (lastAcceptedRequestState) {
+      if (userInfo.userName === lastAcceptedRequestState.requester.userName) {
+        toast.success(
+          `${lastAcceptedRequestState.receiver.userName} accepted your friend request`,
+          {
+            position: 'top-right',
+            autoClose: 2000,
+            closeOnClick: true,
+            pauseOnHover: true,
+            theme: 'colored',
+            transition: Slide,
+          }
+        );
+      } else {
+        toast.success(
+          `You accepted ${lastAcceptedRequestState.requester.userName}'s friend request`,
+          {
+            position: 'top-right',
+            autoClose: 2000,
+            closeOnClick: true,
+            pauseOnHover: true,
+            theme: 'colored',
+            transition: Slide,
+          }
+        );
+      }
+
+      return;
+    }
+
     if (
       incomingRequestState &&
-      typeof incomingRequestState == 'object' &&
-      Object.keys(incomingRequestState).length > 0
+      Array.isArray(incomingRequestState) &&
+      incomingRequestState.length > 0
     ) {
-      toast.success(`${incomingRequestState.senderName} sent a connection request`, {
-        position: 'top-right',
-        autoClose: 2000,
-        closeOnClick: true,
-        pauseOnHover: true,
-        theme: 'colored',
-        transition: Slide,
-      });
+      toast.success(
+        `${incomingRequestState[incomingRequestState.length - 1].senderName} sent a connection request`,
+        {
+          position: 'top-right',
+          autoClose: 2000,
+          closeOnClick: true,
+          pauseOnHover: true,
+          theme: 'colored',
+          transition: Slide,
+        }
+      );
+
+      return;
     }
-  }, [incomingRequestState]);
+  }, [incomingRequestState, lastAcceptedRequestState]);
 
   return (
     <>
