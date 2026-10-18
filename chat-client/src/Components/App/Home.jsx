@@ -128,7 +128,7 @@ function Home() {
   return (
     <>
       <div className="flex flex-col lg:flex-row justify-between items-stretch bg-[#14111F] min-h-screen w-full">
-        <ChatList />
+        <ChatList userId={data?.data?.userInfo?.userId} />
         <WelcomeBanner username={data?.data?.userInfo?.userName} />
       </div>
       <ToastContainer />

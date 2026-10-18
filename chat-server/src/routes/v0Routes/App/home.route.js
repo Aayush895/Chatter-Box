@@ -14,7 +14,6 @@ const homeRouter = Router();
 homeRouter.get('/welcome', jwtAuthMiddleware, welcomeController);
 homeRouter.get('/users', jwtAuthMiddleware, fetchUsersController);
 homeRouter.get('/requests', jwtAuthMiddleware, showAllPendingRequests);
-// TODO: Have to test this api
 homeRouter.get('/friends', jwtAuthMiddleware, fetchUserFriendsController);
 
 homeRouter.post('/request', jwtAuthMiddleware, sendFriendRequest);

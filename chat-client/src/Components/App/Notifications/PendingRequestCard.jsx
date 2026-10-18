@@ -10,7 +10,7 @@ function PendingRequestCard({ userName, requestData }) {
 
   const { userInfo } = useContext(UserContext);
 
-  const { data, isLoading, refetch } = useFetchFriendsList(
+  const { refetchFriendsList } = useFetchFriendsList(
     userInfo.accessToken,
     requestData?.receiver?.id
   );
@@ -26,11 +26,10 @@ function PendingRequestCard({ userName, requestData }) {
     });
 
     dispatch(hideNotification());
-    refetch();
+    refetchFriendsList();
   }
 
   function handleDeclineRequest() {}
-  console.log('LOGGING FRIENDS LIST: ', data);
   return (
     <div className="px-5 flex border-b border-slate-600 items-center">
       <div className="h-10 w-10 rounded-full flex items-center justify-center bg-orange-900">
