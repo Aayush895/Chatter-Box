@@ -1,6 +1,9 @@
 import { Server } from 'socket.io';
 import { jwtAuthSocketMiddleware } from '../middlewares/jwtAuthSocketMiddleware.js';
-import { updateFriendshipStatusController } from '../controllers/friends.controller.js';
+import {
+  updateFriendshipStatusController,
+  storeChatInformationController,
+} from '../controllers/friends.controller.js';
 import { acknowledgementCallback, parseIncomingData } from '../utils/socketUtils.js';
 
 function intializeSocketServer(httpServer) {
@@ -31,6 +34,45 @@ function intializeSocketServer(httpServer) {
 
         io.to(`user:${senderId}`).to(`user:${receiverId}`).emit('request-status', response);
         acknowledge({ success: true, data: response });
+      } catch (error) {
+        acknowledge(acknowledgementCallback(error));
+      }
+    });
+
+    // TODO: Need to test this feature on the UI
+    // On send-message event emit, receive-message event.
+    socket.on('send-message', async (data, acknowledge) => {
+      try {
+        const { senderId, receiverId, messageContent, messageType, attachmentURL, attachmentName } =
+          data;
+
+        const response = await storeChatInformationController(
+          senderId,
+          receiverId,
+          messageContent,
+          messageType,
+          attachmentURL,
+          attachmentName
+        );
+
+        const dataObj = {
+          senderInformation: {
+            senderId: response.senderId,
+            senderName: response.senderName,
+          },
+          receverInformation: {
+            receiverId: response.receiverId,
+            receiverName: response.receiverName,
+          },
+          messageType,
+          messageContent,
+        };
+        io.to(`user:${receiverId}`).emit('receive-message', dataObj);
+        acknowledge({
+          success: true,
+          data: messageContent,
+          message: 'message received by the sender',
+        });
       } catch (error) {
         acknowledge(acknowledgementCallback(error));
       }

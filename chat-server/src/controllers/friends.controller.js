@@ -5,6 +5,7 @@ import {
   showAllPendingRequestsService,
   updateFriendRequestStatusService,
   fetchUserFriendsService,
+  storeChatInformationService,
 } from '../services/friends.service.js';
 
 // Protected route
@@ -91,14 +92,6 @@ export async function showAllPendingRequests(req, res) {
   }
 }
 
-export async function updateFriendshipStatusController({ senderId, receiverId, friendshipStatus }) {
-  return await updateFriendRequestStatusService({
-    senderId,
-    receiverId,
-    friendshipStatus,
-  });
-}
-
 export async function fetchUserFriendsController(req, res) {
   const { id } = req.query;
 
@@ -137,4 +130,31 @@ export async function fetchUserFriendsController(req, res) {
         )
       );
   }
+}
+
+export async function updateFriendshipStatusController({ senderId, receiverId, friendshipStatus }) {
+  // TODO: Need to confirm if extra verification layer is needed or not for socket controllers
+  return await updateFriendRequestStatusService({
+    senderId,
+    receiverId,
+    friendshipStatus,
+  });
+}
+
+export async function storeChatInformationController(
+  senderId,
+  receiverId,
+  messageContent,
+  messageType,
+  attachmentURL = '',
+  attachmentName = ''
+) {
+  return await storeChatInformationService(
+    senderId,
+    receiverId,
+    messageContent,
+    messageType,
+    attachmentURL,
+    attachmentName
+  );
 }

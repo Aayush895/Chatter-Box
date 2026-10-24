@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Op } from 'sequelize';
 import { Friendship } from '../schemas/FriendshipSchema.js';
 import { User } from '../schemas/Auth/AuthSchemas.js';
+import { Message } from '../schemas/MessageSchema.js';
 
 export async function sendFriendRequestRepository(senderDetails, receiverDetails) {
   try {
@@ -146,6 +147,31 @@ export async function fetchUserFriendsRepository(userId) {
 
     // Each row has both users; keep whichever one is not the current user
     return friendships.map(f => (f.requesterId === Number(userId) ? f.receiver : f.requester));
+  } catch (error) {
+    error.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+    throw error;
+  }
+}
+
+export async function storeChatInformationRepository(
+  senderId,
+  receiverId,
+  messageContent,
+  messageType,
+  attachmentURL,
+  attachmentName
+) {
+  try {
+    const storeChatResponse = await Message.create({
+      senderId,
+      receiverId,
+      messageType,
+      content: messageContent,
+      attachmentUrl: attachmentURL,
+      attachmentName,
+    });
+
+    return storeChatResponse;
   } catch (error) {
     error.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
     throw error;

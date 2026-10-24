@@ -4,6 +4,7 @@ import {
   fetchUserFriendsRepository,
   sendFriendRequestRepository,
   showAllpendingRequestsRepository,
+  storeChatInformationRepository,
   updateFriendshipStatusRepository,
 } from '../repository/friendsRepository.js';
 
@@ -85,4 +86,30 @@ export async function fetchUserFriendsService(userId) {
   }
 
   return friendsList;
+}
+
+export async function storeChatInformationService(
+  senderId,
+  receiverId,
+  messageContent,
+  messageType,
+  attachmentURL,
+  attachmentName
+) {
+  const storedChatResponse = await storeChatInformationRepository(
+    senderId,
+    receiverId,
+    messageContent,
+    messageType,
+    attachmentURL,
+    attachmentName
+  );
+
+  if (!storedChatResponse) {
+    const error = new Error('Something went wrong while storing chat information on DB');
+    error.status = StatusCodes.INTERNAL_SERVER_ERROR;
+    throw console.error();
+  }
+
+  return storedChatResponse;
 }

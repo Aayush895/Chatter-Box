@@ -1,5 +1,6 @@
 import { User } from './Auth/AuthSchemas.js';
 import { Friendship } from './FriendshipSchema.js';
+import { Message } from './MessageSchema.js';
 
 // TODO: Need to understand this relation in mysql as well as Sequelize
 
@@ -20,4 +21,10 @@ User.hasMany(Friendship, { as: 'receivedFriendRequests', foreignKey: 'receiverId
 Friendship.belongsTo(User, { as: 'requester', foreignKey: 'requesterId' });
 Friendship.belongsTo(User, { as: 'receiver', foreignKey: 'receiverId' });
 
-export { User, Friendship };
+Message.belongsTo(User, { as: 'sender', foreignKey: 'senderId' });
+Message.belongsTo(User, { as: 'receiver', foreignKey: 'receiverId' });
+
+User.hasMany(Message, { as: 'sentMessages', foreignKey: 'senderId' });
+User.hasMany(Message, { as: 'receivedMessages', foreignKey: 'receiverId' });
+
+export { User, Friendship, Message };
