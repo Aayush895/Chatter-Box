@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast, Slide } from 'react-toastify';
@@ -6,9 +6,11 @@ import { useWelcomeQuery } from '../../Hooks/Queries/useWelcomeQuery';
 import UserContext from '../../Context/UserContext';
 import ChatList from './WelcomeDashboard/ChatList';
 import WelcomeBanner from './WelcomeDashboard/WelcomeBanner';
+import ChatLayout from './Message/ChatLayout';
 
-// TODO: Once token expires, I get brought back to the login page but on refresh, the toast keeps on playing. Need to fix that issue as well.
+// TODO: Once token expires, I get brought back to the login page but on refresh, the toast keeps on playing. Need to fix that issue as well. Also need to make sure the app logs out and goes back to the registeration page
 function Home() {
+  const [showMessageComponent, setShowMessageComponent] = useState(false);
   const { userInfo, setUserInfo } = useContext(UserContext);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -128,8 +130,15 @@ function Home() {
   return (
     <>
       <div className="flex flex-col lg:flex-row justify-between items-stretch bg-[#14111F] min-h-screen w-full">
-        <ChatList userId={data?.data?.userInfo?.userId} />
-        <WelcomeBanner username={data?.data?.userInfo?.userName} />
+        <ChatList
+          userId={data?.data?.userInfo?.userId}
+          setShowMessageComponent={setShowMessageComponent}
+        />
+        {showMessageComponent ? (
+          <ChatLayout />
+        ) : (
+          <WelcomeBanner username={data?.data?.userInfo?.userName} />
+        )}
       </div>
       <ToastContainer />
     </>

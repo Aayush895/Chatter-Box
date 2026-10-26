@@ -1,4 +1,4 @@
-function UserCard({ avatarUrl = '', userName }) {
+function UserCard({ avatarUrl = '', userName, setShowMessageComponent }) {
   const initials = userName
     .split(' ')
     .map((part) => part[0])
@@ -7,7 +7,10 @@ function UserCard({ avatarUrl = '', userName }) {
     .toUpperCase();
 
   return (
-    <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-colors duration-200 hover:bg-[#241E38]">
+    <div
+      className="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-colors duration-200 hover:bg-[#241E38]"
+      onClick={() => setShowMessageComponent(true)}
+    >
       <div className="relative shrink-0">
         {avatarUrl ? (
           <img
