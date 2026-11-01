@@ -33,6 +33,10 @@ export function socketMiddleware(url) {
             console.log(data);
           });
 
+          socket?.on('receive-message', (data) => {
+            console.log('RECIEVER MESSAGE DATA: ', data);
+          });
+
           socket.on('connect_error', (err) => {
             console.log(`connect_error due to ${err.message}`);
           });
@@ -51,6 +55,14 @@ export function socketMiddleware(url) {
           socket?.emit('friend-request:accept', action.payload, (response) => {
             console.log(response);
           });
+          break;
+        }
+
+        case 'messages/sendMessage': {
+          socket?.emit('send-message', action.payload, (response) => {
+            console.log('LOGGING SENT MESSAGE RESP: ', response);
+          });
+
           break;
         }
 

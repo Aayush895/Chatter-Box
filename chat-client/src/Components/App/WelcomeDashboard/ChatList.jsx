@@ -10,7 +10,7 @@ import Notification from '../Notifications/Notification';
 import UserCard from '../Utils/UserCard';
 import SettingsMenu from '../Utils/SettingsMenu';
 
-function ChatList({ userId, setShowMessageComponent }) {
+function ChatList({ userId }) {
   const [isOnline, setOnline] = useState(() => {
     return navigator.onLine;
   });
@@ -99,8 +99,9 @@ function ChatList({ userId, setShowMessageComponent }) {
             fetchedFriendsListData.data.map((friend) => (
               <div key={friend.id} className="shrink-0">
                 <UserCard
-                  userName={friend.userName}
-                  setShowMessageComponent={setShowMessageComponent}
+                  friendUserName={friend.userName}
+                  friendUserId={friend.id}
+                  userId={userId}
                 />
               </div>
             ))}

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast, Slide } from 'react-toastify';
@@ -10,7 +10,6 @@ import ChatLayout from './Message/ChatLayout';
 
 // TODO: Once token expires, I get brought back to the login page but on refresh, the toast keeps on playing. Need to fix that issue as well. Also need to make sure the app logs out and goes back to the registeration page
 function Home() {
-  const [showMessageComponent, setShowMessageComponent] = useState(false);
   const { userInfo, setUserInfo } = useContext(UserContext);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -20,6 +19,10 @@ function Home() {
 
   const lastAcceptedRequestState = useSelector(
     (state) => state.pendingRequestsNotification.lastAcceptedRequestData
+  );
+
+  const isMessageComponentVisible = useSelector(
+    (state) => state.messages.isMessageComponentVisible
   );
 
   const getStoredToken = () => {
@@ -130,11 +133,8 @@ function Home() {
   return (
     <>
       <div className="flex flex-col lg:flex-row justify-between items-stretch bg-[#14111F] min-h-screen w-full">
-        <ChatList
-          userId={data?.data?.userInfo?.userId}
-          setShowMessageComponent={setShowMessageComponent}
-        />
-        {showMessageComponent ? (
+        <ChatList userId={data?.data?.userInfo?.userId} />
+        {isMessageComponentVisible ? (
           <ChatLayout />
         ) : (
           <WelcomeBanner username={data?.data?.userInfo?.userName} />
