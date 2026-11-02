@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RiAttachment2 } from 'react-icons/ri';
 import { IoIosSend } from 'react-icons/io';
+import { getSentMessage } from '../../../Slices/messagesSlice';
 
 function ChatInput() {
   const [textMessage, setTextMessage] = useState('');
@@ -23,8 +24,7 @@ function ChatInput() {
         attachmentName: '',
       },
     });
-
-    setTextMessage('');
+    dispatch(getSentMessage(textMessage));
   }
 
   function handleTextMessage(e) {

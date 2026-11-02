@@ -46,3 +46,8 @@
 - A `/friend-requests` get request is sent to fetch all the pending requests
 - If the user click on accept / reject btn, a patch request for `/friend-requests/:id` api is sent updating the status
 - If the request is accepted, we send a request to the server fetching all the requests that are accepted which signifies all the friends.
+
+## How to handle send and receive message
+
+- When I as sender send a message the receiver receives that message from their end.
+- I need to render the message as sender from my end and receiver from their end.

@@ -34,6 +34,10 @@ export function socketMiddleware(url) {
           });
 
           socket?.on('receive-message', (data) => {
+            storeApi.dispatch({
+              type: 'messages/getReceivedMessage',
+              payload: data.messageContent,
+            });
             console.log('RECIEVER MESSAGE DATA: ', data);
           });
 
