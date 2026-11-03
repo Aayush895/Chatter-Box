@@ -1,5 +1,6 @@
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { fetchUserssService } from '../services/app.service.js';
+import { fetchChatService } from '../services/chat.service.js';
 import { AppError, AppResponse } from '../utils/Request_Response_Classes.js';
 
 export async function welcomeController(req, res) {
@@ -85,6 +86,46 @@ export async function fetchUsersController(req, res) {
           status,
           error.reasonPhrase || ReasonPhrases.INTERNAL_SERVER_ERROR,
           'Something went wrong while searching the Users',
+          error.message
+        )
+      );
+  }
+}
+
+export async function getChatsController(req, res) {
+  const { senderId, recevierId } = req.query;
+
+  if (!senderId || !recevierId) {
+    throw new AppError(
+      StatusCodes.BAD_REQUEST,
+      ReasonPhrases.BAD_GATEWAY,
+      'Please provide sender or receiver information!',
+      ''
+    );
+  }
+
+  try {
+    const chats = await fetchChatService(senderId, recevierId);
+    return res
+      .status(StatusCodes.OK)
+      .json(
+        new AppResponse(
+          StatusCodes.OK,
+          ReasonPhrases.OK,
+          'Chats were feched successfully',
+          '',
+          chats
+        )
+      );
+  } catch (error) {
+    const status = error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
+    return res
+      .status(status)
+      .json(
+        new AppError(
+          status,
+          'Something went wrong while fetching chats',
+          'Cannot fetch chats, please try again after sometime',
           error.message
         )
       );

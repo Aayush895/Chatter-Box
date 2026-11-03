@@ -51,3 +51,7 @@
 
 - When I as sender send a message the receiver receives that message from their end.
 - I need to render the message as sender from my end and receiver from their end.
+- The base prototype UI is working but there are a few bugs.
+- I need to design an API which fetches all the previous chats from the database.
+- Everytime a new message is sent, the UI should render new chat bubble components instead of re-rendering in the same exisiting bubbles
+- And need to figure out a way to show the previous messages in a way that seems like the users have interacted in this way instead of the entire chats displayed as a list in bubbles without forming a coherent conversations.
