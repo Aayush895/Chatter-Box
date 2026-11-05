@@ -1,12 +1,21 @@
 import UserCard from '../Utils/UserCard';
 import { IoVideocamOutline } from 'react-icons/io5';
 import { MdMoreVert } from 'react-icons/md';
+import { useSelector } from 'react-redux';
 
 function ChatNav() {
+  const senderId = useSelector((state) => state.messages.senderId);
+  const receiverId = useSelector((state) => state.messages.receiverId);
+  const receiverName = useSelector((state) => state.messages.receiverName);
+
   return (
     <div className="flex items-center justify-between shrink-0 gap-2 bg-[#1A1628] border-b border-[#2C2640]">
       <div className="min-w-0 flex-1">
-        <UserCard userName="Priya Shah" />
+        <UserCard
+          friendUserName={receiverName}
+          senderId={senderId}
+          receiverId={receiverId}
+        />
       </div>
       <div className="flex items-center shrink-0 gap-3 px-3 sm:gap-5 sm:px-6">
         <IoVideocamOutline size={25} className="text-slate-600" />

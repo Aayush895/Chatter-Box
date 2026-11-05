@@ -2,12 +2,12 @@ import { useDispatch } from 'react-redux';
 import {
   getReceiverId,
   getSenderId,
+  getReceiverName,
   showMessageComponent,
 } from '../../../Slices/messagesSlice';
 
 import { getInitials } from '../../../../utitlity';
 
-// TODO: Need to fix a bug where the name of the user in the chat layout is undefined
 function UserCard({ avatarUrl = '', friendUserName, friendUserId, userId }) {
   const dispatch = useDispatch();
   console.log('LOGGING: ', friendUserName);
@@ -17,6 +17,7 @@ function UserCard({ avatarUrl = '', friendUserName, friendUserId, userId }) {
     dispatch(showMessageComponent());
     dispatch(getReceiverId(friendUserId));
     dispatch(getSenderId(userId));
+    dispatch(getReceiverName(friendUserName));
   }
 
   return (

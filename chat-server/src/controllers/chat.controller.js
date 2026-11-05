@@ -94,6 +94,7 @@ export async function fetchUsersController(req, res) {
 
 export async function getChatsController(req, res) {
   const { senderId, recevierId } = req.query;
+  console.log('LOGGING SENDERID & RECEIVERID: ', senderId, recevierId);
 
   if (!senderId || !recevierId) {
     throw new AppError(

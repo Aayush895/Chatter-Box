@@ -6,8 +6,11 @@ const messagesSlice = createSlice({
     isMessageComponentVisible: false,
     senderId: null,
     receiverId: null,
+    senderName: '',
+    receiverName: '',
     receivedMessage: '',
     sentMessage: '',
+    previousMessages: [],
     chatMessage: {
       senderId: null,
       receiverId: null,
@@ -33,11 +36,17 @@ const messagesSlice = createSlice({
     getReceiverId: function (state, receiverId) {
       state.receiverId = receiverId;
     },
+    getReceiverName: function (state, receiverNamePayload) {
+      state.receiverName = receiverNamePayload.payload;
+    },
     getSentMessage: function (state, sentMessagePayload) {
       state.sentMessage = sentMessagePayload.payload;
     },
     getReceivedMessage: function (state, receivedMessagePayload) {
       state.receivedMessage = receivedMessagePayload.payload;
+    },
+    getPreviousMessages: function (state, previousMessagesPayload) {
+      state.previousMessages = previousMessagesPayload.payload;
     },
   },
 });
@@ -49,6 +58,8 @@ export const {
   getReceiverId,
   getSentMessage,
   getReceivedMessage,
+  getPreviousMessages,
+  getReceiverName,
 } = messagesSlice.actions;
 
 export default messagesSlice.reducer;
