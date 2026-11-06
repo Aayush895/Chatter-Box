@@ -10,7 +10,6 @@ import { getInitials } from '../../../../utitlity';
 
 function UserCard({ avatarUrl = '', friendUserName, friendUserId, userId }) {
   const dispatch = useDispatch();
-  console.log('LOGGING: ', friendUserName);
   const initials = getInitials(friendUserName);
 
   function handleReceiverInfo() {

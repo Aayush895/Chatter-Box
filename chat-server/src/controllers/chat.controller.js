@@ -93,10 +93,9 @@ export async function fetchUsersController(req, res) {
 }
 
 export async function getChatsController(req, res) {
-  const { senderId, recevierId } = req.query;
-  console.log('LOGGING SENDERID & RECEIVERID: ', senderId, recevierId);
+  const { senderId, receiverId } = req.query;
 
-  if (!senderId || !recevierId) {
+  if (!senderId || !receiverId) {
     throw new AppError(
       StatusCodes.BAD_REQUEST,
       ReasonPhrases.BAD_GATEWAY,
@@ -106,7 +105,7 @@ export async function getChatsController(req, res) {
   }
 
   try {
-    const chats = await fetchChatService(senderId, recevierId);
+    const chats = await fetchChatService(senderId, receiverId);
     return res
       .status(StatusCodes.OK)
       .json(
