@@ -17,6 +17,9 @@ function Notification({ isVisible, onClose, pendingRequestData, isLoading }) {
           className="cursor-pointer hover:text-[#FF6B4D]"
           onClick={onClose}
         />
+        {pendingRequestData && pendingRequestData.length > 0 && (
+          <span className="absolute top-0 right-0 h-2.5 w-2.5 rounded-full bg-[#FF6B4D] ring-2 ring-[#14111F]" />
+        )}
       </div>
       {isLoading ? (
         <div className="flex justify-center items-center h-[calc(100%-3.25rem)]">

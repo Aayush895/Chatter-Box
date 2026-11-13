@@ -6,20 +6,26 @@ export async function fetchChatRepository(senderId, receiverId) {
   // select * from Messages where senderId = senderId and receiverId = receiverId
   const chatsList = await Message.findAll({
     attributes: [
+      'id',
       'senderId',
       'receiverId',
       'messageType',
       'content',
       'attachmentUrl',
       'attachmentName',
+      'createdAt',
     ],
     where: {
-      senderId: {
-        [Op.eq]: senderId,
-      },
-      receiverId: {
-        [Op.eq]: receiverId,
-      },
+      [Op.or]: [
+        {
+          senderId,
+          receiverId,
+        },
+        {
+          senderId: receiverId,
+          receiverId: senderId,
+        },
+      ],
     },
   });
 

@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   getReceiverId,
@@ -9,6 +10,7 @@ import {
 import { getInitials } from '../../../../utitlity';
 
 function UserCard({ avatarUrl = '', friendUserName, friendUserId, userId }) {
+  const [isUserOnline, set_isUserOnline] = useState(true);
   const dispatch = useDispatch();
   const initials = getInitials(friendUserName);
 
@@ -18,6 +20,14 @@ function UserCard({ avatarUrl = '', friendUserName, friendUserId, userId }) {
     dispatch(getSenderId(userId));
     dispatch(getReceiverName(friendUserName));
   }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      set_isUserOnline(true);
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div
@@ -36,7 +46,11 @@ function UserCard({ avatarUrl = '', friendUserName, friendUserId, userId }) {
             {initials}
           </div>
         )}
-        <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#5EEAD4] border-2 border-[#1A1628]" />
+        {isUserOnline ? (
+          <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#5EEAD4] border-2 border-[#1A1628]" />
+        ) : (
+          <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-slate-500 border-2 border-[#1A1628]" />
+        )}
       </div>
 
       <div className="min-w-0">

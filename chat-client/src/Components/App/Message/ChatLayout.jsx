@@ -20,13 +20,11 @@ function ChatLayout() {
     refetchChats();
   }, []);
 
-  console.log('LOGGING CHATS: ', userChats);
-
   return (
     <div className="flex flex-col w-full h-dvh">
       <ChatNav />
       <div className="flex-1 min-h-0">
-        <ChatBody />
+        <ChatBody userChats={userChats} senderId={senderId} receiverId={receiverId} />
       </div>
       <ChatInput />
     </div>
