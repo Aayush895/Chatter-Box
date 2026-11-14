@@ -55,3 +55,8 @@
 - I need to design an API which fetches all the previous chats from the database.
 - Everytime a new message is sent, the UI should render new chat bubble components instead of re-rendering in the same exisiting bubbles
 - And need to figure out a way to show the previous messages in a way that seems like the users have interacted in this way instead of the entire chats displayed as a list in bubbles without forming a coherent conversations.
+
+### How to handle sending documents and images as messages
+
+- When the send an image button is clicked, an api request should be sent first which uploads the selected image to cloudinary
+- After the image is uploaded in cloudinary, the generated URL is sent as a message to the user along with whatever message is added

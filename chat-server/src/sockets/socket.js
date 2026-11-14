@@ -39,8 +39,6 @@ function intializeSocketServer(httpServer) {
       }
     });
 
-    // TODO: Need to test this feature on the UI
-    // On send-message event emit, receive-message event.
     socket.on('send-message', async (data, acknowledge) => {
       try {
         const { senderId, receiverId, messageContent, messageType, attachmentURL, attachmentName } =
@@ -70,7 +68,7 @@ function intializeSocketServer(httpServer) {
         io.to(`user:${receiverId}`).emit('receive-message', dataObj);
         acknowledge({
           success: true,
-          data: messageContent,
+          messageContent,
           message: 'message received by the sender',
         });
       } catch (error) {

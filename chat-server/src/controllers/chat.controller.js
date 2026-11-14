@@ -1,4 +1,6 @@
+import fs from 'fs';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
+import cloudinary from '../config/cloudinaryConfig.js';
 import { fetchUserssService } from '../services/app.service.js';
 import { fetchChatService } from '../services/chat.service.js';
 import { AppError, AppResponse } from '../utils/Request_Response_Classes.js';
@@ -129,5 +131,55 @@ export async function getChatsController(req, res) {
           error.message
         )
       );
+  }
+}
+
+export async function uploadFileController(req, res) {
+  const { image, document } = req.files || {};
+  const file = image?.[0] || document?.[0];
+  try {
+    if (!file) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json(
+          new AppError(
+            StatusCodes.BAD_REQUEST,
+            'No file was uploaded',
+            'Please attach an image or a document and try again',
+            'No file found in request'
+          )
+        );
+    }
+
+    const result = await cloudinary.uploader.upload(file.path, {
+      resource_type: image ? 'image' : 'raw',
+    });
+    return res
+      .status(StatusCodes.OK)
+      .json(
+        new AppResponse(
+          StatusCodes.OK,
+          ReasonPhrases.OK,
+          'File was uploaded successfully',
+          '',
+          result
+        )
+      );
+  } catch (error) {
+    const status = error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
+    return res
+      .status(status)
+      .json(
+        new AppError(
+          status,
+          'Something went wrong while uploading the file',
+          'Cannot upload the file, please try again after sometime',
+          error.message
+        )
+      );
+  } finally {
+    if (file) {
+      await fs.promises.unlink(file.path).catch(() => {});
+    }
   }
 }

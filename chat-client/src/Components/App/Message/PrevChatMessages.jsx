@@ -6,7 +6,6 @@ function PrevChatMessages({ userChats, sender }) {
     userChats &&
     userChats.data.length > 0 &&
     userChats.data?.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-  console.log('LOGGING prev chats: ', userChats);
   return (
     <>
       {sortedChats?.length > 0 &&

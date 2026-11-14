@@ -8,8 +8,7 @@ const messagesSlice = createSlice({
     receiverId: null,
     senderName: '',
     receiverName: '',
-    receivedMessage: [],
-    sentMessage: [],
+    liveMessages: [],
     previousMessages: [],
     chatMessage: {
       senderId: null,
@@ -40,10 +39,10 @@ const messagesSlice = createSlice({
       state.receiverName = receiverNamePayload.payload;
     },
     getSentMessage: function (state, sentMessagePayload) {
-      state.sentMessage.push(sentMessagePayload.payload);
+      state.liveMessages.push({ from: 'me', ...sentMessagePayload.payload });
     },
     getReceivedMessage: function (state, receivedMessagePayload) {
-      state.receivedMessage.push(receivedMessagePayload.payload);
+      state.liveMessages.push({ from: 'them', ...receivedMessagePayload.payload });
     },
     getPreviousMessages: function (state, previousMessagesPayload) {
       state.previousMessages = previousMessagesPayload.payload;

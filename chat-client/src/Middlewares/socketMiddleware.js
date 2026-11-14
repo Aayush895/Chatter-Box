@@ -29,8 +29,6 @@ export function socketMiddleware(url) {
                 payload: data,
               });
             }
-
-            console.log(data);
           });
 
           socket?.on('receive-message', (data) => {
@@ -64,7 +62,7 @@ export function socketMiddleware(url) {
 
         case 'messages/sendMessage': {
           socket?.emit('send-message', action.payload, (response) => {
-            console.log('LOGGING SENT MESSAGE RESP: ', response);
+            console.log('LOGGING SENDER MESSAGE RESP: ', response);
           });
 
           break;
