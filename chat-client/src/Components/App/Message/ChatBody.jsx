@@ -7,8 +7,8 @@ function ChatBody({ userChats, senderId, receiverId }) {
   return (
     <div className="h-full overflow-y-auto py-4 px-3 sm:px-4 bg-[#14111F]">
       <PrevChatMessages userChats={userChats} sender={senderId} receiver={receiverId} />
-      {liveMessages.map((message, idx) => {
-        const isMine = message.from === 'me';
+      {liveMessages.map((currMessage, idx) => {
+        const isMine = currMessage.from === 'me';
         return (
           <div className={`chat ${isMine ? 'chat-end' : 'chat-start'}`} key={idx}>
             <div
@@ -18,7 +18,7 @@ function ChatBody({ userChats, senderId, receiverId }) {
                   : 'bg-[#3A3F4B] text-[#F1F3F5] rounded-[18px_18px_18px_6px]'
               }`}
             >
-              {message.messageContent}
+              {currMessage.message}
             </div>
           </div>
         );

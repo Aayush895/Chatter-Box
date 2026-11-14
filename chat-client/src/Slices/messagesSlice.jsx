@@ -39,10 +39,16 @@ const messagesSlice = createSlice({
       state.receiverName = receiverNamePayload.payload;
     },
     getSentMessage: function (state, sentMessagePayload) {
-      state.liveMessages.push({ from: 'me', ...sentMessagePayload.payload });
+      state.liveMessages.push({
+        from: 'me',
+        message: sentMessagePayload.payload,
+      });
     },
     getReceivedMessage: function (state, receivedMessagePayload) {
-      state.liveMessages.push({ from: 'them', ...receivedMessagePayload.payload });
+      state.liveMessages.push({
+        from: 'them',
+        message: receivedMessagePayload.payload,
+      });
     },
     getPreviousMessages: function (state, previousMessagesPayload) {
       state.previousMessages = previousMessagesPayload.payload;

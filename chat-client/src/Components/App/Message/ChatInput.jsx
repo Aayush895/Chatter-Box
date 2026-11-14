@@ -36,7 +36,7 @@ function ChatInput() {
     };
 
     dispatch({ type: 'messages/sendMessage', payload: messageToSend });
-    dispatch(getSentMessage(messageToSend));
+    dispatch(getSentMessage(textMessage));
     setTextMessage('');
     setAttachment(null);
   }
