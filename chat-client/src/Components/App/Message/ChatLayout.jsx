@@ -18,7 +18,7 @@ function ChatLayout() {
 
   useEffect(() => {
     refetchChats();
-  }, []);
+  }, [senderId, receiverId]);
 
   return (
     <div className="flex flex-col w-full h-dvh">

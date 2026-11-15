@@ -95,15 +95,30 @@ export async function fetchUsersController(req, res) {
 }
 
 export async function getChatsController(req, res) {
+  const callerId = String(req.userInfo.userId);
   const { senderId, receiverId } = req.query;
 
   if (!senderId || !receiverId) {
     throw new AppError(
       StatusCodes.BAD_REQUEST,
-      ReasonPhrases.BAD_GATEWAY,
+      ReasonPhrases.BAD_REQUEST,
       'Please provide sender or receiver information!',
       ''
     );
+  }
+
+  const isParticipant = String(senderId) === callerId || String(receiverId) === callerId;
+  if (!isParticipant) {
+    return res
+      .status(StatusCodes.FORBIDDEN)
+      .json(
+        new AppError(
+          StatusCodes.FORBIDDEN,
+          ReasonPhrases.FORBIDDEN,
+          'Not an authenticated user!',
+          ''
+        )
+      );
   }
 
   try {

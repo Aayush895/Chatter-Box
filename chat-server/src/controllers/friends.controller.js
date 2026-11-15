@@ -10,7 +10,8 @@ import {
 
 // Protected route
 export async function sendFriendRequest(req, res) {
-  const { senderUserName, receiverUserName } = req.body;
+  const senderUserName = req.userInfo.userName;
+  const { receiverUserName } = req.body;
 
   if (!senderUserName || !receiverUserName) {
     throw new AppError(
@@ -93,8 +94,7 @@ export async function showAllPendingRequests(req, res) {
 }
 
 export async function fetchUserFriendsController(req, res) {
-  const { id } = req.query;
-
+  const id = req.userInfo.userId;
   if (!id) {
     return res
       .status(StatusCodes.BAD_REQUEST)

@@ -10,10 +10,7 @@ function PendingRequestCard({ userName, requestData }) {
 
   const { userInfo } = useContext(UserContext);
 
-  const { refetchFriendsList } = useFetchFriendsList(
-    userInfo.accessToken,
-    requestData?.receiver?.id
-  );
+  const { refetchFriendsList } = useFetchFriendsList(userInfo.accessToken);
 
   function handleAcceptRequest(e) {
     dispatch({

@@ -25,10 +25,10 @@ export async function fetchUsers(userSearchQuery, accessToken) {
   return serverResponse.data;
 }
 
-export async function sendFriendRequest(accessToken, senderUserName, receiverUserName) {
+export async function sendFriendRequest(accessToken, receiverUserName) {
   const serverResponse = await axiosInstance.post(
     `/request`,
-    { senderUserName, receiverUserName },
+    { receiverUserName },
     {
       headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
     }
@@ -45,8 +45,8 @@ export async function fetchPendingRequests(accessToken) {
   return serverResponse.data;
 }
 
-export async function fetchFriendsList(accessToken, userId) {
-  const serverResponse = await axiosInstance.get(`/friends?id=${userId}`, {
+export async function fetchFriendsList(accessToken) {
+  const serverResponse = await axiosInstance.get(`/friends`, {
     headers: accessToken
       ? {
           Authorization: `Bearer ${accessToken}`,

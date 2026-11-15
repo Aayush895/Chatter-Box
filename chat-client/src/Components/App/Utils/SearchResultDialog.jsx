@@ -6,10 +6,7 @@ import UserContext from '../../../Context/UserContext';
 function SearchResultDialog({ users, isLoading, setSearchResultDialog }) {
   const { userInfo } = useContext(UserContext);
 
-  const friendRequestMutationFn = useFriendRequestMutation(
-    userInfo?.accessToken,
-    userInfo?.userName
-  );
+  const friendRequestMutationFn = useFriendRequestMutation(userInfo?.accessToken);
 
   function handleFriendRequest(receiverUserName) {
     setSearchResultDialog(false);

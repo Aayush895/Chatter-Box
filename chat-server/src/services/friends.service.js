@@ -106,9 +106,9 @@ export async function storeChatInformationService(
   );
 
   if (!storedChatResponse) {
-    const error = new Error('Something went wrong while storing chat information on DB');
+    const error = new Error('Failed to store chat');
     error.status = StatusCodes.INTERNAL_SERVER_ERROR;
-    throw console.error();
+    throw error;
   }
 
   return storedChatResponse;

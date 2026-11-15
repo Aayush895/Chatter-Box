@@ -28,7 +28,7 @@ export async function registerUser(userName, email, password) {
 export async function loginUser(email, password) {
   const findUser = await User.findOne({ where: { email: email } });
   if (!findUser) {
-    const err = new Error('No account found for this email');
+    const err = new Error('Invalid email or password');
     err.statusCode = StatusCodes.UNAUTHORIZED; // deliberately not NOT_FOUND — see note below
     throw err;
   }

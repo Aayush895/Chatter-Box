@@ -26,8 +26,7 @@ function ChatList({ userId }) {
     useFetchPendingRequests(userInfo.accessToken);
 
   const { fetchedFriendsListData, refetchFriendsList } = useFetchFriendsList(
-    userInfo.accessToken,
-    userId
+    userInfo.accessToken
   );
 
   function handleShowNotification() {
@@ -43,6 +42,10 @@ function ChatList({ userId }) {
     if (userId) refetchFriendsList();
   }, [userId, lastAcceptedRequestData]);
 
+  useEffect(() => {
+    if (lastAcceptedRequestData) refetchPendingRequests();
+  }, [lastAcceptedRequestData]);
+
   return (
     <div className="relative w-full md:w-[40%] lg:w-[35%] xl:w-[30%] h-screen border-r border-r-slate-800 px-5 py-2 bg-[#1A1628] flex flex-col">
       <div className="flex justify-between items-center mb-7">
@@ -53,10 +56,13 @@ function ChatList({ userId }) {
           </span>
         </div>
         <div
-          className="flex items-center justify-center p-2 rounded-md cursor-pointer hover:bg-[#241E38]"
+          className="relative flex items-center justify-center p-2 rounded-md cursor-pointer hover:bg-[#241E38]"
           onClick={handleShowNotification}
         >
           <IoIosNotifications className="text-lg" />
+          {pendingRequestData && pendingRequestData.data?.length > 0 && (
+            <span className="absolute top-1.5 right-1.5 h-2.5 w-2.5 rounded-full bg-[#FF6B4D] ring-2 ring-[#14111F]" />
+          )}
         </div>
       </div>
 

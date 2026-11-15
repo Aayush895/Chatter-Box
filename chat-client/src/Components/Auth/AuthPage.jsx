@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import BrandPanel from './BrandPanel';
 import Registration from './Registration';
 
 function AuthPage() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const locationState = location?.state;
@@ -17,6 +18,8 @@ function AuthPage() {
         pauseOnHover: true,
         transition: Bounce,
       });
+
+      navigate(location.pathname, { replace: true, state: null });
     }
   }, [location]);
   return (

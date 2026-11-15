@@ -11,8 +11,12 @@ export const CORSCONFIG = {
 };
 export const DB_URI = process.env.DB_URI;
 export const JWT_SECRET = process.env.JWT_SECRET;
-export const JWT_OPTIONS = {
+export const JWT_OPTIONS_FOR_REFRESH_TOKEN = {
   expiresIn: '30d',
+};
+
+export const JWT_OPTIONS_FOR_ACCESS_TOKEN = {
+  expiresIn: '15m',
 };
 
 export const JWT_ACC_SECRET = process.env.JWT_ACC_SECRET;

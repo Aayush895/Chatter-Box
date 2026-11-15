@@ -1,7 +1,12 @@
 import { StatusCodes } from 'http-status-codes';
 import { registerUser, loginUser } from '../repository/authRepository.js';
 import { generateAccessToken, generateRefreshToken } from '../utils/jwts.js';
-import { JWT_OPTIONS, JWT_SECRET, JWT_ACC_SECRET } from '../config/serverConfig.js';
+import {
+  JWT_OPTIONS_FOR_REFRESH_TOKEN,
+  JWT_SECRET,
+  JWT_ACC_SECRET,
+  JWT_OPTIONS_FOR_ACCESS_TOKEN,
+} from '../config/serverConfig.js';
 
 export async function signupService(userName, email, password) {
   if (!userName || !password || !email) {
@@ -32,7 +37,7 @@ export async function loginService(email, password) {
       email: databaseResponseData.email,
     },
     JWT_SECRET,
-    JWT_OPTIONS
+    JWT_OPTIONS_FOR_REFRESH_TOKEN
   );
 
   const accessToken = generateAccessToken(
@@ -42,9 +47,7 @@ export async function loginService(email, password) {
       email: databaseResponseData.email,
     },
     JWT_ACC_SECRET,
-    {
-      expiresIn: '1h',
-    }
+    JWT_OPTIONS_FOR_ACCESS_TOKEN
   );
 
   return {

@@ -8,7 +8,7 @@ import ChatList from './WelcomeDashboard/ChatList';
 import WelcomeBanner from './WelcomeDashboard/WelcomeBanner';
 import ChatLayout from './Message/ChatLayout';
 
-// TODO: Once token expires, I get brought back to the login page but on refresh, the toast keeps on playing. Need to fix that issue as well. Also need to make sure the app logs out and goes back to the registeration page
+// TODO: Need to show an acknowledgement that the user loggedin successfully and need to add a loader b/w login and home page
 function Home() {
   const { userInfo, setUserInfo } = useContext(UserContext);
   const navigate = useNavigate();

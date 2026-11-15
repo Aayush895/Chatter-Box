@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getReceiverId,
   getSenderId,
@@ -13,6 +13,9 @@ function UserCard({ avatarUrl = '', friendUserName, friendUserId, userId }) {
   const [isUserOnline, set_isUserOnline] = useState(true);
   const dispatch = useDispatch();
   const initials = getInitials(friendUserName);
+
+  const selectedReceiverId = useSelector((state) => state.messages.receiverId);
+  const isSelected = selectedReceiverId?.payload === friendUserId;
 
   function handleReceiverInfo() {
     dispatch(showMessageComponent());
@@ -31,7 +34,7 @@ function UserCard({ avatarUrl = '', friendUserName, friendUserId, userId }) {
 
   return (
     <div
-      className="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-colors duration-200 hover:bg-[#241E38]"
+      className={`flex items-center gap-3 px-3 py-2.5 cursor-pointer transition-colors duration-200 ${isSelected ? 'bg-[#241E38]' : ''} hover:bg-[#241E38]`}
       onClick={handleReceiverInfo}
     >
       <div className="relative shrink-0">
