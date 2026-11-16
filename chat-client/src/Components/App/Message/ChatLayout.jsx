@@ -1,4 +1,4 @@
-import { useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { useFetchChats } from '../../../Hooks/Queries/useFetchChats';
 import ChatBody from './ChatBody';
@@ -10,15 +10,11 @@ function ChatLayout() {
   const { userInfo } = useContext(UserContext);
   const senderId = useSelector((state) => state.messages.senderId);
   const receiverId = useSelector((state) => state.messages.receiverId);
-  const { userChats, refetchChats } = useFetchChats(
+  const { userChats } = useFetchChats(
     userInfo.accessToken,
     senderId.payload,
     receiverId.payload
   );
-
-  useEffect(() => {
-    refetchChats();
-  }, [senderId, receiverId]);
 
   return (
     <div className="flex flex-col w-full h-dvh">

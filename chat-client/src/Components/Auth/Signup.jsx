@@ -4,6 +4,8 @@ import { UserEmailSvg, UserNameSvg, UserPasswordSvg } from '../../Mocks/svgMocks
 import Button from '../Utils/Button';
 import Header from '../Utils/Header';
 import Input from '../Utils/Input';
+import { getErrorMessage } from '../../../utitlity';
+import { toast, Slide } from 'react-toastify';
 
 function Signup({ setIsLogin }) {
   const [userInformation, setuserInformation] = useState({
@@ -42,11 +44,29 @@ function Signup({ setIsLogin }) {
 
   function handleFormSubmit(e) {
     e.preventDefault();
-    registerUserFn.mutate();
+    registerUserFn.mutate(null, {
+      onSuccess: () => {
+        toast.success('User has been registered successfully', {
+          position: 'top-right',
+          autoClose: 2000,
+          closeOnClick: true,
+          pauseOnHover: true,
+          theme: 'colored',
+          transition: Slide,
+        });
+      },
+      onError: function (error) {
+        const { status, description } = getErrorMessage(error);
+        toast.error(`${status}: ${description}`);
+      },
+    });
   }
 
   return (
-    <form className="bg-[#14111F] w-full px-6 sm:px-10 lg:px-14 py-10 lg:py-14 flex flex-col items-center lg:items-start justify-center">
+    <form
+      onSubmit={handleFormSubmit}
+      className="bg-[#14111F] w-full px-6 sm:px-10 lg:px-14 py-10 lg:py-14 flex flex-col items-center lg:items-start justify-center"
+    >
       <Header
         headerText="Create your account"
         subHeaderText="Takes about 30 seconds. No credit card."
@@ -113,7 +133,9 @@ function Signup({ setIsLogin }) {
         />
       </div>
       <div className="mt-2 w-full sm:max-w-105">
-        <Button btnText="Create account" handleFormSubmit={handleFormSubmit} />
+        <fieldset disabled={registerUserFn.isPending} className="min-w-0">
+          <Button btnText="Create account" />
+        </fieldset>
         <p className="text-center text-[13.5px] text-[#9992AC] font-normal mt-5">
           Already have an account?{' '}
           <span

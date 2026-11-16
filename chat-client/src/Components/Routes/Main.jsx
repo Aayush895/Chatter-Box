@@ -5,6 +5,9 @@ import UserContext from '../../Context/UserContext';
 import ApiErrorContext from '../../Context/ApiErrorContext';
 import App from '../../App';
 import Home from '../App/Home';
+import AppLoader from '../AppLoader';
+import { getErrorMessage } from '../../../utitlity';
+import AppError from '../AppError';
 
 function Main() {
   const [userInfo, setUserInfo] = useState({
@@ -18,8 +21,20 @@ function Main() {
     description: '',
   });
 
-  const { isLoading } = useHealthQuery();
-  if (isLoading) return <h1>Loading...</h1>;
+  const { isLoading, isError, error, refetch, isFetching } = useHealthQuery();
+  if (isLoading) return <AppLoader />;
+
+  if (isError) {
+    const { status, description } = getErrorMessage(error);
+    return (
+      <AppError
+        status={status}
+        description={description}
+        onRetry={refetch}
+        isRetrying={isFetching}
+      />
+    );
+  }
 
   return (
     <BrowserRouter>

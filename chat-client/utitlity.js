@@ -40,3 +40,29 @@ export function getHowMuchTimePassed(time) {
 
   return 'just now';
 }
+
+export function getErrorMessage(error) {
+  // Stage 1: server responded with an error status
+  if (error.response) {
+    return {
+      status: error.response.statusText || 'Error',
+      description:
+        error.response.data?.description ?? 'Something went wrong. Please try again.',
+    };
+  }
+
+  // Stage 2: request was sent, but no response came back
+  if (error.code === 'ECONNABORTED') {
+    return { status: 'Timeout', description: 'The server took too long to respond.' };
+  }
+
+  if (error.request) {
+    return {
+      status: 'Network Error',
+      description: 'Unable to reach the server. Please check your connection.',
+    };
+  }
+
+  // Stage 3: failed before sending
+  return { status: 'Error', description: error.message };
+}

@@ -6,9 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint:fix": "eslint src/**/*.js --fix",
-    "lint": "eslint src/**/*.js",
-    "prettify": "prettier src/**/*.js --write",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format:check": "prettier --check src",
+    "prettify": "prettier --write src",
     "preview": "vite preview",
     "start": "npm run dev"
   },
@@ -18,12 +19,6 @@
     "trailingComma": "es5",
     "semi": true,
     "singleQuote": true
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "plugin:prettier/recommended"
-    ]
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.12.0",

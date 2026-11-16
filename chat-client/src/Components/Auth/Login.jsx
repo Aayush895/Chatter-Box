@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import Header from '../Utils/Header';
 import Input from '../Utils/Input';
 import Button from '../Utils/Button';
 import { UserEmailSvg, UserPasswordSvg } from '../../Mocks/svgMocks';
 import { useLoginUserMutation } from '../../Hooks/Mutations/useLoginUserMutation';
+import { getErrorMessage } from '../../../utitlity';
 
 function Login({ setIsLogin }) {
   const [userLoginInfo, setUserLoginInfo] = useState({
@@ -30,10 +32,18 @@ function Login({ setIsLogin }) {
 
   function handleLogin(e) {
     e.preventDefault();
-    loginMutation.mutate();
+    loginMutation.mutate(undefined, {
+      onError: (error) => {
+        const { status, description } = getErrorMessage(error);
+        toast.error(`${status}: ${description}`);
+      },
+    });
   }
   return (
-    <form className="bg-[#14111F] w-full px-6 sm:px-10 lg:px-14 py-10 lg:py-14 flex flex-col items-center lg:items-start justify-center">
+    <form
+      onSubmit={handleLogin}
+      className="bg-[#14111F] w-full px-6 sm:px-10 lg:px-14 py-10 lg:py-14 flex flex-col items-center lg:items-start justify-center"
+    >
       <Header
         headerText="Welcome back"
         subHeaderText="Log in to pick up where you left off."
@@ -67,7 +77,9 @@ function Login({ setIsLogin }) {
         />
       </div>
       <div className="mt-2 w-full sm:max-w-105">
-        <Button btnText="Log in" handleLogin={handleLogin} />
+        <fieldset disabled={loginMutation.isPending} className="min-w-0">
+          <Button btnText="Log in" />
+        </fieldset>
         <p className="text-center text-[13.5px] text-[#9992AC] font-normal mt-5">
           New to wisp?{' '}
           <span

@@ -16,7 +16,10 @@ function MockConversationPanel() {
         {mockConversationData.map((conversationData) => {
           const isMe = conversationData.senderName === 'You';
           return (
-            <div key={conversationData.id} className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
+            <div
+              key={conversationData.id}
+              className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}
+            >
               <TypeWriterEffect
                 text={conversationData.message}
                 senderName={conversationData.senderName}

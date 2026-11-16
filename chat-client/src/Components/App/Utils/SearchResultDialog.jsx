@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { toast, Slide } from 'react-toastify';
 import { useFriendRequestMutation } from '../../../Hooks/Mutations/useFriendRequestMutation';
 import UserContext from '../../../Context/UserContext';
+import { getErrorMessage } from '../../../../utitlity';
 
 function SearchResultDialog({ users, isLoading, setSearchResultDialog }) {
   const { userInfo } = useContext(UserContext);
@@ -10,14 +11,21 @@ function SearchResultDialog({ users, isLoading, setSearchResultDialog }) {
 
   function handleFriendRequest(receiverUserName) {
     setSearchResultDialog(false);
-    friendRequestMutationFn.mutate(receiverUserName);
-    toast.success(`Connection request was successfully sent to ${receiverUserName}`, {
-      position: 'top-right',
-      autoClose: 2000,
-      closeOnClick: true,
-      pauseOnHover: true,
-      theme: 'colored',
-      transition: Slide,
+    friendRequestMutationFn.mutate(receiverUserName, {
+      onSuccess: () => {
+        toast.success(`Connection request was successfully sent to ${receiverUserName}`, {
+          position: 'top-right',
+          autoClose: 2000,
+          closeOnClick: true,
+          pauseOnHover: true,
+          theme: 'colored',
+          transition: Slide,
+        });
+      },
+      onError: (error) => {
+        const { status, description } = getErrorMessage(error);
+        toast.error(`${status}: ${description}`);
+      },
     });
   }
 
@@ -51,6 +59,7 @@ function SearchResultDialog({ users, isLoading, setSearchResultDialog }) {
                   <button
                     type="button"
                     onClick={() => handleFriendRequest(user.userName)}
+                    disabled={friendRequestMutationFn.isPending ? true : false}
                     className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-full bg-indigo-600 text-white hover:bg-indigo-500 active:bg-indigo-700 transition-colors whitespace-nowrap"
                   >
                     Add Friend
