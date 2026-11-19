@@ -10,11 +10,7 @@ function ChatLayout() {
   const { userInfo } = useContext(UserContext);
   const senderId = useSelector((state) => state.messages.senderId);
   const receiverId = useSelector((state) => state.messages.receiverId);
-  const { userChats } = useFetchChats(
-    userInfo.accessToken,
-    senderId.payload,
-    receiverId.payload
-  );
+  const { userChats } = useFetchChats(userInfo.accessToken, senderId, receiverId);
 
   return (
     <div className="flex flex-col w-full h-dvh">

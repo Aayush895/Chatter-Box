@@ -10,7 +10,7 @@ function PrevChatMessages({ userChats, sender }) {
     <>
       {sortedChats?.length > 0 &&
         sortedChats.map((chat) => {
-          return chat.senderId == sender.payload ? (
+          return chat.senderId == sender ? (
             <div className="chat chat-end" key={chat.id}>
               <div className="chat-bubble before:hidden max-w-[80%] sm:max-w-[65%] wrap-anywhere px-3.5 py-2 text-[15px] sm:text-base bg-[#FF6B4D] text-[#4A1B0C] rounded-[18px_18px_6px_18px]">
                 {chat.content}

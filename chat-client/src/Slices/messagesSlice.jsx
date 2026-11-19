@@ -30,10 +30,11 @@ const messagesSlice = createSlice({
       state.chatMessage = messageData.payload;
     },
     getSenderId: function (state, senderId) {
-      state.senderId = senderId;
+      state.senderId = senderId.payload;
     },
     getReceiverId: function (state, receiverId) {
-      state.receiverId = receiverId;
+      state.receiverId = receiverId.payload;
+      state.liveMessages = [];
     },
     getReceiverName: function (state, receiverNamePayload) {
       state.receiverName = receiverNamePayload.payload;

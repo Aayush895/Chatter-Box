@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getReceiverId,
@@ -10,12 +9,11 @@ import {
 import { getInitials } from '../../../../utitlity';
 
 function UserCard({ avatarUrl = '', friendUserName, friendUserId, userId }) {
-  const [isUserOnline, set_isUserOnline] = useState(true);
   const dispatch = useDispatch();
   const initials = getInitials(friendUserName);
 
   const selectedReceiverId = useSelector((state) => state.messages.receiverId);
-  const isSelected = selectedReceiverId?.payload === friendUserId;
+  const isSelected = selectedReceiverId === friendUserId;
 
   function handleReceiverInfo() {
     dispatch(showMessageComponent());
@@ -23,14 +21,6 @@ function UserCard({ avatarUrl = '', friendUserName, friendUserId, userId }) {
     dispatch(getSenderId(userId));
     dispatch(getReceiverName(friendUserName));
   }
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      set_isUserOnline(true);
-    }, 6000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div
@@ -48,11 +38,6 @@ function UserCard({ avatarUrl = '', friendUserName, friendUserId, userId }) {
           <div className="w-11 h-11 rounded-full bg-[#2C2640] flex items-center justify-center text-sm font-semibold text-slate-300">
             {initials}
           </div>
-        )}
-        {isUserOnline ? (
-          <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#5EEAD4] border-2 border-[#1A1628]" />
-        ) : (
-          <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-slate-500 border-2 border-[#1A1628]" />
         )}
       </div>
 

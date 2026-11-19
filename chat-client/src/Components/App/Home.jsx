@@ -7,6 +7,7 @@ import UserContext from '../../Context/UserContext';
 import ChatList from './WelcomeDashboard/ChatList';
 import WelcomeBanner from './WelcomeDashboard/WelcomeBanner';
 import ChatLayout from './Message/ChatLayout';
+import { getErrorMessage } from '../../../utitlity';
 
 // TODO: Need to show an acknowledgement that the user loggedin successfully and need to add a loader b/w login and home page
 function Home() {
@@ -40,10 +41,11 @@ function Home() {
   // UseEffect when there is an error
   useEffect(() => {
     if (isError) {
+      const { status, description } = getErrorMessage(error);
       navigate('/', {
         state: {
-          errorDescription: error.response.data.description,
-          status: error.response.statusText,
+          errorDescription: description,
+          status: status,
         },
       });
       localStorage.removeItem('accessToken');

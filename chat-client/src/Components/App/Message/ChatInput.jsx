@@ -30,8 +30,8 @@ function ChatInput() {
     const hasAttachment = attachment && textMessage.includes(attachment.url);
 
     const messageToSend = {
-      senderId: senderId.payload,
-      receiverId: receiverId.payload,
+      senderId: senderId,
+      receiverId: receiverId,
       messageType: hasAttachment ? attachment.type : 'text',
       messageContent: textMessage,
       attachmentURL: hasAttachment ? attachment.url : '',

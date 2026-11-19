@@ -15,10 +15,7 @@ function ChatNav() {
             <div className="w-11 h-11 rounded-full bg-[#2C2640] flex items-center justify-center text-sm font-semibold text-slate-300">
               {initials}
             </div>
-
-            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#5EEAD4] border-2 border-[#1A1628]" />
           </div>
-
           <div className="min-w-0">
             <p className="text-[13.5px] font-medium text-[#F3F1F7] truncate">
               {receiverName}
