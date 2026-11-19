@@ -3,7 +3,7 @@ import { fetchUserDetails } from '../repository/appRepository.js';
 import {
   fetchUserFriendsRepository,
   sendFriendRequestRepository,
-  showAllpendingRequestsRepository,
+  showAllPendingRequestsRepository,
   storeChatInformationRepository,
   updateFriendshipStatusRepository,
 } from '../repository/friendsRepository.js';
@@ -14,7 +14,7 @@ export async function sendFriendRequestService(senderUserName, receiverUserName)
 
   if (fetchSenderDetails.id == fetchReceiverDetails.id) {
     const error = new Error(`Invalid Request! Please try again`);
-    error.status = StatusCodes.BAD_REQUEST;
+    error.statusCode = StatusCodes.BAD_REQUEST;
     throw error;
   }
 
@@ -26,7 +26,7 @@ export async function sendFriendRequestService(senderUserName, receiverUserName)
 
   if (!friendRequestResponse) {
     const error = new Error(`Couldn't send friend request, please try again later`);
-    error.status = StatusCodes.BAD_REQUEST;
+    error.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
     throw error;
   }
 
@@ -50,11 +50,11 @@ export async function sendFriendRequestService(senderUserName, receiverUserName)
 }
 
 export async function showAllPendingRequestsService(userId) {
-  const allPendingRequests = await showAllpendingRequestsRepository(userId);
+  const allPendingRequests = await showAllPendingRequestsRepository(userId);
 
   if (!allPendingRequests) {
     const error = new Error(`Could not fetch pending requests`);
-    error.status = StatusCodes.INTERNAL_SERVER_ERROR;
+    error.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
     throw error;
   }
 
@@ -69,8 +69,8 @@ export async function updateFriendRequestStatusService({ senderId, receiverId, f
   });
 
   if (!updatedFriendshipStatus) {
-    const error = new Error(`Could not update the friendship status. Something went wrong in DB`);
-    error.status = StatusCodes.INTERNAL_SERVER_ERROR;
+    const error = new Error(`Friend request was not found`);
+    error.statusCode = StatusCodes.NOT_FOUND;
     throw error;
   }
 
@@ -81,7 +81,7 @@ export async function fetchUserFriendsService(userId) {
   const friendsList = await fetchUserFriendsRepository(userId);
   if (!friendsList) {
     const error = new Error(`Could not fetch users friends from the DB`);
-    error.status = StatusCodes.INTERNAL_SERVER_ERROR;
+    error.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
     throw error;
   }
 
@@ -107,7 +107,7 @@ export async function storeChatInformationService(
 
   if (!storedChatResponse) {
     const error = new Error('Failed to store chat');
-    error.status = StatusCodes.INTERNAL_SERVER_ERROR;
+    error.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
     throw error;
   }
 

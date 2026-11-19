@@ -4,7 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import sequelize from './config/databaseConfig.js';
-import intializeSocketServer from './sockets/socket.js';
+import initializeSocketServer from './sockets/socket.js';
 import { CORSCONFIG, PORT } from './config/serverConfig.js';
 import logger from '../logger.js';
 import { v0routerInstance } from './routes/index.route.js';
@@ -35,7 +35,7 @@ app.use(
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-const io = intializeSocketServer(httpServer);
+const io = initializeSocketServer(httpServer);
 
 // Assign io to the app object as an object property so that socket server instance can be accessed in the controller as well.
 app.io = io;

@@ -6,7 +6,7 @@ import {
 } from '../controllers/friends.controller.js';
 import { acknowledgementCallback, parseIncomingData } from '../utils/socketUtils.js';
 
-function intializeSocketServer(httpServer) {
+function initializeSocketServer(httpServer) {
   // Initializing a web socket server
   const io = new Server(httpServer, {
     cors: 'http://localhost:5173',
@@ -58,7 +58,7 @@ function intializeSocketServer(httpServer) {
             senderId: response.senderId,
             senderName: response.senderName,
           },
-          receverInformation: {
+          receiverInformation: {
             receiverId: response.receiverId,
             receiverName: response.receiverName,
           },
@@ -80,4 +80,4 @@ function intializeSocketServer(httpServer) {
   return io;
 }
 
-export default intializeSocketServer;
+export default initializeSocketServer;

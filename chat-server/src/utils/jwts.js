@@ -4,6 +4,6 @@ export function generateRefreshToken(payload, jwtSecret, options) {
   return jwt.sign(payload, jwtSecret, options);
 }
 
-export function generateAccessToken(decodedTokenLayload, accessTokenSecret, options) {
-  return jwt.sign(decodedTokenLayload, accessTokenSecret, options);
+export function generateAccessToken(decodedTokenPayload, accessTokenSecret, options) {
+  return jwt.sign(decodedTokenPayload, accessTokenSecret, options);
 }

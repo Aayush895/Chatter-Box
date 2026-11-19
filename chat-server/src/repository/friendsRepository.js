@@ -30,7 +30,7 @@ export async function sendFriendRequestRepository(senderDetails, receiverDetails
   }
 }
 
-export async function showAllpendingRequestsRepository(userId) {
+export async function showAllPendingRequestsRepository(userId) {
   try {
     const showPendingRequestsResponse = await Friendship.findAll({
       where: {

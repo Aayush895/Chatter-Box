@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import cloudinary from '../config/cloudinaryConfig.js';
-import { fetchUserssService } from '../services/app.service.js';
+import { fetchUsersService } from '../services/app.service.js';
 import { fetchChatService } from '../services/chat.service.js';
 import { AppError, AppResponse } from '../utils/Request_Response_Classes.js';
 
@@ -66,7 +66,7 @@ export async function fetchUsersController(req, res) {
   }
 
   try {
-    const searchResults = await fetchUserssService(searchQuery);
+    const searchResults = await fetchUsersService(searchQuery);
 
     return res
       .status(StatusCodes.OK)

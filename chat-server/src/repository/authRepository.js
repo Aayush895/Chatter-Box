@@ -34,9 +34,7 @@ export async function loginUser(email, password) {
   }
 
   if (comparePassword(password, findUser.password) == false) {
-    const err = new Error(
-      'Wrong password was entered. Please check the password and try again later!'
-    );
+    const err = new Error('Invalid email or password');
     err.statusCode = StatusCodes.UNAUTHORIZED;
     throw err;
   }
